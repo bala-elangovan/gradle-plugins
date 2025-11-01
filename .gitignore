@@ -65,3 +65,5 @@ pom.xml.versionsBackup
 
 # JaCoCo
 *.exec
+
+**/GeneratedVersions.kt

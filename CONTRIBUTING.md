@@ -146,29 +146,36 @@ pre-commit run trailing-whitespace --all-files
 
 ```
 platform-gradle-plugins/
-├── src/main/kotlin/io/github/platform/gradle/
-│   ├── JavaConventionsPlugin.kt       # Base Java configuration
-│   ├── SpringConventionsPlugin.kt     # Spring Boot configuration
-│   └── SpringTestConventionsPlugin.kt # Spring test configuration
-├── build.gradle.kts                   # Build configuration
-└── gradle.properties                  # Version management
+├── conventions-plugin/
+│   ├── src/main/kotlin/io/github/platform/gradle/
+│   │   ├── JavaConventionsPlugin.kt          # Base Java configuration
+│   │   ├── SpringTestConventionsPlugin.kt    # Spring test configuration
+│   │   ├── SpringCoreConventionsPlugin.kt    # Core Spring Boot setup
+│   │   ├── SpringWebConventionsPlugin.kt     # Spring MVC/REST configuration
+│   │   ├── SpringWebFluxConventionsPlugin.kt # Spring WebFlux/Reactive configuration
+│   │   └── GeneratedVersions.kt              # Auto-generated version constants
+│   └── build.gradle.kts                      # Convention plugin build config
+├── build.gradle.kts                          # Root build configuration
+└── gradle.properties                         # Centralized version management
 ```
 
 ### Adding a New Plugin
 
-1. Create a new plugin class in `src/main/kotlin/io/github/platform/gradle/`
-2. Register it in `build.gradle.kts` under `gradlePlugin.plugins`
+1. Create a new plugin class in `conventions-plugin/src/main/kotlin/io/github/platform/gradle/`
+2. Register it in `conventions-plugin/build.gradle.kts` under `gradlePlugin.plugins`
 3. Add tests if applicable
 4. Update README.md with usage instructions
 
 ### Updating Dependencies
 
-All dependency versions are centralized in `gradle.properties`. To update:
+All dependency versions are centralized in `gradle.properties` and auto-generated into `GeneratedVersions.kt`. To update:
 
 1. Modify the version in `gradle.properties`
-2. Test thoroughly
-3. Update `Makefile` check-versions target
+2. Run `make build` (this regenerates `GeneratedVersions.kt`)
+3. Test thoroughly with `make test`
 4. Commit with: `chore: update <dependency> to <version>`
+
+**Note:** The `GeneratedVersions.kt` file is auto-generated - never edit it manually. Always update `gradle.properties` instead.
 
 ## Testing
 

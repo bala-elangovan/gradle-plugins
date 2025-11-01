@@ -51,15 +51,12 @@ class SpringTestConventionsPlugin : Plugin<Project> {
 
     /** Adds Spring Boot Starter Test, MockK, and JUnit Platform Launcher dependencies. */
     private fun Project.addTestDependencies() {
-        val springBootVersion = getVersionProperty("springBootVersion")
-        val mockkVersion = getVersionProperty("mockkVersion")
-
         dependencies {
             // Spring Boot Starter Test - comprehensive testing support
-            add("testImplementation", "org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+            add("testImplementation", "org.springframework.boot:spring-boot-starter-test:${GeneratedVersions.SPRING_BOOT}")
 
             // MockK - powerful mocking library for Kotlin and Java
-            add("testImplementation", "io.mockk:mockk:$mockkVersion")
+            add("testImplementation", "io.mockk:mockk:${GeneratedVersions.MOCKK}")
 
             // JUnit Platform Launcher - required for IDE integration
             add("testRuntimeOnly", "org.junit.platform:junit-platform-launcher")
@@ -76,15 +73,4 @@ class SpringTestConventionsPlugin : Plugin<Project> {
             exclude(mapOf("module" to "spring-boot-starter-logging"))
         }
     }
-
-    /**
-     * Retrieves a version property from gradle.properties.
-     * Throws an exception with a helpful message if the property is not found.
-     */
-    private fun Project.getVersionProperty(propertyName: String): String =
-        findProperty(propertyName) as String?
-            ?: throw IllegalStateException(
-                "Property '$propertyName' not found in gradle.properties. " +
-                    "Please ensure gradle.properties exists in the project root with all required version properties.",
-            )
 }

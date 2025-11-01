@@ -77,27 +77,23 @@ class JavaConventionsPlugin : Plugin<Project> {
 
     /** Adds Lombok dependencies for both main and test source sets. */
     private fun Project.configureLombok() {
-        val lombokVersion = getVersionProperty("lombokVersion")
-
         dependencies {
-            add("compileOnly", "org.projectlombok:lombok:$lombokVersion")
-            add("annotationProcessor", "org.projectlombok:lombok:$lombokVersion")
-            add("testCompileOnly", "org.projectlombok:lombok:$lombokVersion")
-            add("testAnnotationProcessor", "org.projectlombok:lombok:$lombokVersion")
+            add("compileOnly", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
+            add("annotationProcessor", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
+            add("testCompileOnly", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
+            add("testAnnotationProcessor", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
         }
     }
 
     /** Configures Checkstyle with Google Java Style Guide and strict enforcement. */
     private fun Project.configureCheckstyle() {
-        val checkstyleVersion = getVersionProperty("checkstyleVersion")
-
         extensions.configure<CheckstyleExtension> {
-            toolVersion = checkstyleVersion
+            toolVersion = GeneratedVersions.CHECKSTYLE
 
             // Enforce Google Java Style Guide
             config =
                 resources.text.fromUri(
-                    "https://raw.githubusercontent.com/checkstyle/checkstyle/checkstyle-$checkstyleVersion/src/main/resources/google_checks.xml",
+                    "https://raw.githubusercontent.com/checkstyle/checkstyle/checkstyle-$toolVersion/src/main/resources/google_checks.xml",
                 )
 
             // Strict enforcement - fail on any violation
@@ -119,10 +115,8 @@ class JavaConventionsPlugin : Plugin<Project> {
 
     /** Configures JaCoCo code coverage with XML, HTML, and CSV reports. */
     private fun Project.configureJacoco() {
-        val jacocoVersion = getVersionProperty("jacocoVersion")
-
         extensions.configure<JacocoPluginExtension> {
-            toolVersion = jacocoVersion
+            toolVersion = GeneratedVersions.JACOCO
         }
 
         tasks.named<JacocoReport>("jacocoTestReport") {
@@ -159,15 +153,4 @@ class JavaConventionsPlugin : Plugin<Project> {
             }
         }
     }
-
-    /**
-     * Retrieves a version property from gradle.properties.
-     * Throws an exception with a helpful message if the property is not found.
-     */
-    private fun Project.getVersionProperty(propertyName: String): String =
-        findProperty(propertyName) as String?
-            ?: throw IllegalStateException(
-                "Property '$propertyName' not found in gradle.properties. " +
-                    "Please ensure gradle.properties exists in the project root with all required version properties.",
-            )
 }

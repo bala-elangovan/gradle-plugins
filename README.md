@@ -21,6 +21,8 @@ These plugins eliminate boilerplate build configuration and enforce consistent s
 - **Lombok** for reducing boilerplate
 - **MapStruct** for type-safe object mapping
 - **Spring Boot** with dependency management
+- **Centralized version management** via `gradle.properties`
+- **Modular plugin architecture** (core, web, webflux)
 - **Strict dependency resolution** (fails on conflicts)
 - **Comprehensive testing setup** (JUnit 5, MockK, Spring Test)
 
@@ -55,14 +57,15 @@ rootProject.name = "my-spring-app"
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.spring-conventions") version "1.0.0"
+    id("io.github.platform.spring-web-conventions") version "1.0.0"
 }
 
 group = "com.example"
 version = "1.0.0"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("org.postgresql:postgresql")
     // Spring Boot manages versions - no need to specify!
 }
 ```
@@ -72,7 +75,7 @@ dependencies {
 - Lombok support
 - Google Java Style checking
 - JaCoCo code coverage
-- Spring Boot
+- Spring Boot with Web (MVC)
 - MapStruct mapping
 - Comprehensive test setup
 - Strict dependency management
@@ -122,50 +125,110 @@ plugins {
 
 ---
 
-### **Plugin 3: `io.github.platform.spring-conventions`**
+### **Plugin 3: `io.github.platform.spring-core-conventions`**
 
-Complete Spring Boot application setup with production-ready defaults.
+Core Spring Boot setup that's common to all Spring applications.
 
 **What it configures:**
 - ✅ Applies both `java-conventions` and `spring-test-conventions`
 - ✅ Spring Boot plugin (`bootJar`, `bootRun` tasks)
 - ✅ Spring Dependency Management (consistent versions)
-- ✅ Jackson JSR310 (Java 8+ date/time support)
 - ✅ MapStruct (type-safe object mapping)
-- ✅ Strict dependency resolution (fails on conflicts & dynamic versions)
+- ✅ Strict dependency resolution (fails on dynamic versions)
 
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.platform.spring-conventions")
+    id("io.github.platform.spring-core-conventions")
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    // Add your specific dependencies
 }
 ```
+
+---
+
+### **Plugin 4: `io.github.platform.spring-web-conventions`**
+
+Complete setup for Spring Boot Web (MVC) applications.
+
+**What it configures:**
+- ✅ Applies `spring-core-conventions` (includes all base Java and Spring setup)
+- ✅ Spring Boot Starter Web (with embedded Tomcat)
+- ✅ Spring Boot Starter Validation
+- ✅ Spring Boot Starter AOP
+
+**Usage:**
+```kotlin
+plugins {
+    id("io.github.platform.spring-web-conventions")
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("org.postgresql:postgresql")
+}
+```
+
+---
+
+### **Plugin 5: `io.github.platform.spring-webflux-conventions`**
+
+Complete setup for Spring Boot WebFlux (Reactive) applications.
+
+**What it configures:**
+- ✅ Applies `spring-core-conventions` (includes all base Java and Spring setup)
+- ✅ Spring Boot Starter WebFlux (with Netty)
+- ✅ Spring Boot Starter Validation
+- ✅ Reactor Test for reactive testing
+
+**Usage:**
+```kotlin
+plugins {
+    id("io.github.platform.spring-webflux-conventions")
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+    runtimeOnly("io.r2dbc:r2dbc-postgresql")
+}
+```
+
+**Note:** WebFlux uses Netty instead of Tomcat. Don't mix with `spring-web-conventions` - choose one or the other.
 
 ---
 
 ## Plugin Composition
 
 ```
-io.github.platform.spring-conventions
+io.github.platform.spring-web-conventions
     │
-    ├──> io.github.platform.java-conventions
-    │       ├─> java-library
-    │       ├─> checkstyle (Google Java Style)
-    │       ├─> jacoco
-    │       ├─> Java 21 toolchain
-    │       ├─> Lombok
-    │       └─> JUnit Platform
+    └──> io.github.platform.spring-core-conventions
+            │
+            ├──> io.github.platform.java-conventions
+            │       ├─> java-library
+            │       ├─> checkstyle (Google Java Style)
+            │       ├─> jacoco
+            │       ├─> Java 21 toolchain
+            │       ├─> Lombok
+            │       └─> JUnit Platform
+            │
+            ├──> io.github.platform.spring-test-conventions
+            │       ├─> Spring Boot Starter Test
+            │       ├─> MockK
+            │       └─> JUnit Platform Launcher
+            │
+            ├──> org.springframework.boot
+            ├──> io.spring.dependency-management
+            ├──> MapStruct
+            └──> Strict dependency resolution
+
+io.github.platform.spring-webflux-conventions
     │
-    ├──> io.github.platform.spring-test-conventions
-    │       ├─> Spring Boot Starter Test
-    │       ├─> MockK
-    │       └─> JUnit Platform Launcher
-    │
-    ├──> org.springframework.boot
-    ├──> io.spring.dependency-management
-    ├──> Jackson JSR310
-    ├──> MapStruct
-    └──> Strict dependency resolution
+    └──> io.github.platform.spring-core-conventions
+            (same as above)
 ```
 
 ---
@@ -255,10 +318,42 @@ configurations.all {
 // In your project's build.gradle.kts
 configurations.all {
     resolutionStrategy {
-        force("com.fasterxml.jackson.core:jackson-databind:2.18.2")
+        force("com.fasterxml.jackson.core:jackson-databind:2.19.2")
     }
 }
 ```
+
+## Dependency Version Management
+
+All dependency versions are centrally managed in `gradle.properties`:
+
+```properties
+# Spring Boot and Gradle Plugins
+springBootVersion=3.5.7
+springDependencyManagementVersion=1.1.7
+
+# Core Libraries
+lombokVersion=1.18.42
+jacksonVersion=2.19.2
+mapstructVersion=1.6.3
+
+# Code Quality
+checkstyleVersion=10.20.2
+jacocoVersion=0.8.14
+
+# Testing
+mockkVersion=1.14.6
+
+# Swagger
+swaggerAnnotationsVersion=2.2.27
+springdocOpenapiVersion=2.7.0
+```
+
+These versions are automatically generated into `GeneratedVersions.kt` and used throughout the plugins. This ensures:
+- ✅ Single source of truth for all versions
+- ✅ Consistent versions across all plugins
+- ✅ Easy version updates via `gradle.properties`
+- ✅ Type-safe version references in Kotlin code
 
 ---
 
@@ -329,18 +424,45 @@ public interface OrderMapper {
 
 ## Example Projects
 
-### **Minimal Spring Boot REST API**
+### **Spring Boot REST API (MVC)**
 
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.spring-conventions") version "1.0.0"
+    id("io.github.platform.spring-web-conventions") version "1.0.0"
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("org.postgresql:postgresql")
+}
+```
+
+### **Spring Boot Reactive API (WebFlux)**
+
+```kotlin
+// build.gradle.kts
+plugins {
+    id("io.github.platform.spring-webflux-conventions") version "1.0.0"
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+    runtimeOnly("io.r2dbc:r2dbc-postgresql")
+}
+```
+
+### **Spring Boot Core (No Web)**
+
+```kotlin
+// build.gradle.kts
+plugins {
+    id("io.github.platform.spring-core-conventions") version "1.0.0"
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.kafka:spring-kafka")
 }
 ```
 
@@ -353,8 +475,8 @@ plugins {
 }
 
 dependencies {
-    api("com.fasterxml.jackson.core:jackson-databind:2.18.2")
-    implementation("org.apache.commons:commons-lang3:3.14.0")
+    api("com.fasterxml.jackson.core:jackson-databind")
+    implementation("org.apache.commons:commons-lang3")
 }
 ```
 
