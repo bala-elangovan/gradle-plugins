@@ -45,7 +45,8 @@ gradlePlugin {
             id = "io.github.platform.spring-conventions"
             implementationClass = "io.github.platform.gradle.SpringConventionsPlugin"
             displayName = "Spring Boot Conventions Plugin"
-            description = "Provides complete Spring Boot application configuration with MapStruct and strict dependency management"
+            description =
+                "Provides complete Spring Boot application configuration with MapStruct and strict dependency management"
         }
     }
 }
@@ -58,4 +59,31 @@ publishing {
 
 kotlin {
     jvmToolchain(21)
+}
+
+// Task to display current dependency versions
+tasks.register("displayVersions") {
+    group = "help"
+    description = "Displays current dependency versions from gradle.properties"
+
+    doLast {
+        println("\nCurrent Dependency Versions (from gradle.properties):")
+        println("=====================================================\n")
+
+        println("Build Plugins:")
+        println("  Spring Boot Plugin:          ${project.property("springBootVersion")}")
+        println("  Dependency Management:       ${project.property("dependencyManagementVersion")}")
+
+        println("\nJava Dependencies:")
+        println("  Lombok:                      ${project.property("lombokVersion")}")
+        println("  Checkstyle (Google Style):   ${project.property("checkstyleVersion")}")
+        println("  JaCoCo:                      ${project.property("jacocoVersion")}")
+
+        println("\nSpring Dependencies:")
+        println("  Jackson:                     ${project.property("jacksonVersion")}")
+        println("  MapStruct:                   ${project.property("mapstructVersion")}")
+        println("  MockK:                       ${project.property("mockkVersion")}")
+
+        println("\n💡 To update versions, edit gradle.properties\n")
+    }
 }

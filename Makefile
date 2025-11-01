@@ -43,12 +43,4 @@ publish-local:
 	@echo "  }"
 
 check-versions:
-	@echo "Current Dependency Versions:"
-	@echo "============================"
-	@echo "Spring Boot:  3.4.1"
-	@echo "Lombok:       1.18.36"
-	@echo "Checkstyle:   10.20.2 (Google Java Style)"
-	@echo "JaCoCo:       0.8.12"
-	@echo "Jackson:      2.18.2"
-	@echo "MapStruct:    1.6.3"
-	@echo "MockK:        1.13.14"
+	@./gradlew -q displayVersions
