@@ -14,10 +14,12 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
  * Convention plugin that provides base Java and Kotlin configuration for all projects.
  *
  * This plugin establishes foundational build standards including
- * - Java 21 toolchain configuration
+ * - Java 21 and Kotlin JVM toolchain configuration
+ * - Kotlin JVM plugin automatically applied
  * - Lombok support for reducing boilerplate code
  * - Google Java Format enforcement via Spotless
- * - Kotlin formatting with ktlint via Spotless
+ * - Kotlin formatting with ktlint via Spotless (with unused imports removal)
+ * - Apache Commons Lang3 for common utilities
  * - JaCoCo code coverage reporting (XML, HTML, CSV)
  * - JUnit Platform for modern testing
  * - Standard repository configuration
@@ -35,6 +37,7 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
  *
  * Key dependencies:
  * - Lombok for annotation processing
+ * - Apache Commons Lang3 for common utilities
  * - Spotless with google-java-format for Java formatting
  * - Spotless with ktlint for Kotlin formatting
  * - JaCoCo for code coverage analysis
@@ -45,25 +48,33 @@ class JavaConventionsPlugin : Plugin<Project> {
             applyPlugins()
             configureJavaToolchain()
             configureRepositories()
-            configureLombok()
+            configureDependencies()
             configureSpotless()
             configureJacoco()
             configureTesting()
         }
     }
 
-    /** Applies java-library, spotless, and jacoco plugins. */
+    /** Applies java-library, kotlin, spotless, and jacoco plugins. */
     private fun Project.applyPlugins() {
         pluginManager.apply("java-library")
+        pluginManager.apply("org.jetbrains.kotlin.jvm")
         pluginManager.apply("com.diffplug.spotless")
         pluginManager.apply("jacoco")
     }
 
-    /** Configures Java 21 toolchain. */
+    /** Configures Java 21 toolchain for both Java and Kotlin. */
     private fun Project.configureJavaToolchain() {
         extensions.configure<JavaPluginExtension> {
             toolchain {
                 languageVersion.set(JavaLanguageVersion.of(21))
+            }
+        }
+
+        // Configure Kotlin JVM toolchain (configured after Kotlin plugin is applied)
+        pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
+            extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension> {
+                jvmToolchain(21)
             }
         }
     }
@@ -76,13 +87,17 @@ class JavaConventionsPlugin : Plugin<Project> {
         }
     }
 
-    /** Adds Lombok dependencies for both main and test source sets. */
-    private fun Project.configureLombok() {
+    /** Configures common dependencies: Lombok and Apache Commons Lang3. */
+    private fun Project.configureDependencies() {
         dependencies {
+            // Lombok for reducing boilerplate
             add("compileOnly", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
             add("annotationProcessor", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
             add("testCompileOnly", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
             add("testAnnotationProcessor", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
+
+            // Apache Commons Lang3 for common utilities (StringUtils, etc.)
+            add("implementation", "org.apache.commons:commons-lang3:${GeneratedVersions.COMMONS_LANG3}")
         }
     }
 

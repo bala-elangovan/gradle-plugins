@@ -20,11 +20,13 @@ repositories {
 val springBootVersion: String by project
 val springDependencyManagementVersion: String by project
 val spotlessVersion: String by project
+val kotlinVersion = "2.2.20"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
     implementation("io.spring.gradle:dependency-management-plugin:$springDependencyManagementVersion")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:$spotlessVersion")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 }
 
 gradlePlugin {
@@ -101,6 +103,7 @@ val generateVersions by tasks.registering {
                 appendLine("    const val LOMBOK = \"${props.getProperty("lombokVersion")}\"")
                 appendLine("    const val JACKSON = \"${props.getProperty("jacksonVersion")}\"")
                 appendLine("    const val MAPSTRUCT = \"${props.getProperty("mapstructVersion")}\"")
+                appendLine("    const val COMMONS_LANG3 = \"${props.getProperty("commonsLang3Version")}\"")
                 appendLine("    const val SPOTLESS = \"${props.getProperty("spotlessVersion")}\"")
                 appendLine("    const val GOOGLE_JAVA_FORMAT = \"${props.getProperty("googleJavaFormatVersion")}\"")
                 appendLine("    const val KTLINT = \"${props.getProperty("ktlintVersion")}\"")
