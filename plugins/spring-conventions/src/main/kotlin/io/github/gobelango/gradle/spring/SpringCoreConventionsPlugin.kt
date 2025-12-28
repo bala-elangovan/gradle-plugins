@@ -1,4 +1,4 @@
-package io.github.platform.gradle
+package io.github.gobelango.gradle.spring
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.dependencies
 /**
  * Convention plugin for core Spring Boot configuration.
  *
- * This plugin provides base Spring Boot setup that's common to all Spring applications:
+ * This plugin provides a base Spring Boot setup that's common to all Spring applications:
  * - Spring Boot plugin with bootJar and bootRun tasks
  * - Spring Dependency Management for consistent versions
  * - MapStruct for type-safe object mapping
@@ -21,7 +21,7 @@ import org.gradle.kotlin.dsl.dependencies
  * **Usage:**
  * ```
  * plugins {
- *     id("io.github.platform.spring-core-conventions")
+ *     id("io.github.gobelango.spring-core-conventions")
  * }
  * ```
  */
@@ -35,8 +35,9 @@ class SpringCoreConventionsPlugin : Plugin<Project> {
     }
 
     private fun Project.applyRequiredPlugins() {
-        pluginManager.apply("io.github.platform.java-conventions")
-        pluginManager.apply("io.github.platform.spring-test-conventions")
+        // Apply by class reference instead of ID to avoid plugin resolution issues in consumer projects
+        pluginManager.apply(io.github.gobelango.gradle.JavaConventionsPlugin::class.java)
+        pluginManager.apply(SpringTestConventionsPlugin::class.java)
         pluginManager.apply("org.springframework.boot")
         pluginManager.apply("io.spring.dependency-management")
     }
@@ -44,9 +45,9 @@ class SpringCoreConventionsPlugin : Plugin<Project> {
     private fun Project.addCommonDependencies() {
         dependencies {
             // MapStruct - Compile-time bean mapping
-            add("implementation", "org.mapstruct:mapstruct:${GeneratedVersions.MAPSTRUCT}")
-            add("annotationProcessor", "org.mapstruct:mapstruct-processor:${GeneratedVersions.MAPSTRUCT}")
-            add("testAnnotationProcessor", "org.mapstruct:mapstruct-processor:${GeneratedVersions.MAPSTRUCT}")
+            add("implementation", "org.mapstruct:mapstruct:${SpringConventionsVersions.MAPSTRUCT}")
+            add("annotationProcessor", "org.mapstruct:mapstruct-processor:${SpringConventionsVersions.MAPSTRUCT}")
+            add("testAnnotationProcessor", "org.mapstruct:mapstruct-processor:${SpringConventionsVersions.MAPSTRUCT}")
         }
     }
 

@@ -1,10 +1,11 @@
-package io.github.platform.gradle
+package io.github.gobelango.gradle
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.testing.Test
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
@@ -17,9 +18,9 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
 /**
  * Convention plugin that provides base Java and Kotlin configuration for all projects.
  *
- * This plugin establishes foundational build standards including
- * - Java 21 and Kotlin JVM toolchain configuration
- * - Kotlin JVM plugin automatically applied
+ * This plugin establishes foundational build standards including:
+ * - Java 21 toolchain configuration
+ * - Kotlin JVM toolchain configuration (if Kotlin plugin is applied)
  * - Lombok support for reducing boilerplate code
  * - Google Java Format enforcement via Spotless
  * - Kotlin formatting with ktlint via Spotless (with unused imports removal)
@@ -28,18 +29,26 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
  * - JUnit Platform for modern testing
  * - Standard repository configuration
  *
- * **Usage: **
- * ```
+ * **Important:** This plugin does NOT apply the Kotlin plugin automatically to avoid conflicts
+ * in multi-module projects. Apply Kotlin in your root build.gradle.kts with `apply false`:
+ *
+ * ```kotlin
+ * // Root build.gradle.kts
  * plugins {
- *     id("io.github.platform.java-conventions")
+ *     kotlin("jvm") version "2.2.20" apply false
+ * }
+ *
+ * // Subproject build.gradle.kts
+ * plugins {
+ *     kotlin("jvm")
+ *     id("io.github.gobelango.java-conventions")
  * }
  * ```
  *
- * **Configured Dependencies: **
- * Dependency versions are managed in `gradle.properties` at the project root.
- * This ensures a single source of truth for all version management.
+ * **Version Management:**
+ * Dependency versions are managed in `gradle/libs.versions.toml` (Gradle Version Catalog).
  *
- * Key dependencies:
+ * Key dependencies configured:
  * - Lombok for annotation processing
  * - Apache Commons Lang3 for common utilities
  * - Spotless with google-java-format for Java formatting
@@ -59,10 +68,14 @@ class JavaConventionsPlugin : Plugin<Project> {
         }
     }
 
-    /** Applies java-library, kotlin, spotless, and jacoco plugins. */
+    /**
+     * Applies java-library, spotless, and jacoco plugins.
+     * Note: Kotlin plugin is NOT applied automatically to avoid conflicts in multi-module projects.
+     * Users should apply Kotlin plugin in their root build.gradle.kts with 'apply false' and then
+     * apply it to individual modules as needed. The convention plugin will configure Kotlin if present.
+     */
     private fun Project.applyPlugins() {
         pluginManager.apply("java-library")
-        pluginManager.apply("org.jetbrains.kotlin.jvm")
         pluginManager.apply("com.diffplug.spotless")
         pluginManager.apply("jacoco")
     }
@@ -75,7 +88,7 @@ class JavaConventionsPlugin : Plugin<Project> {
             }
         }
 
-        // Configure Kotlin JVM toolchain (configured after Kotlin plugin is applied)
+        // Configure Kotlin JVM toolchain (configured after the Kotlin plugin is applied)
         pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension> {
                 jvmToolchain(21)
@@ -189,7 +202,7 @@ class JavaConventionsPlugin : Plugin<Project> {
             // Configure test logging
             testLogging {
                 events("passed", "skipped", "failed")
-                exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+                exceptionFormat = TestExceptionFormat.FULL
                 showStandardStreams = false
             }
         }

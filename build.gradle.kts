@@ -1,17 +1,17 @@
 plugins {
-    kotlin("jvm") version "2.2.20"
+    alias(libs.plugins.kotlin.jvm) apply false
 }
 
-group = "io.github.platform"
+group = "io.github.gobelango"
 version = "1.0.0"
 
 repositories {
     mavenCentral()
 }
 
-// Root project is just a container for the conventions-plugin module
+// Root project is a container for java-conventions and spring-conventions modules
 tasks.register("publishAllToMavenLocal") {
     group = "publishing"
     description = "Publishes all plugins to Maven Local"
-    dependsOn(":conventions-plugin:publishToMavenLocal")
+    dependsOn(":plugins:java-conventions:publishToMavenLocal", ":plugins:spring-conventions:publishToMavenLocal")
 }

@@ -40,7 +40,7 @@ dependencies {
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.java-conventions") version "1.0.0"
+    id("io.github.gobelango.java-conventions") version "1.0.0"
 }
 
 // That's it! Everything is pre-configured
@@ -82,7 +82,7 @@ dependencies {
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.spring-web-conventions") version "1.0.0"
+    id("io.github.gobelango.spring-web-conventions") version "1.0.0"
 }
 
 // Only add your specific dependencies
@@ -93,7 +93,7 @@ dependencies {
 ```
 
 **Benefits:**
-- ✅ Spring Boot, Web, Validation, AOP pre-configured
+- ✅ Spring Boot, Web, Validation, AspectJ (AOP) pre-configured
 - ✅ Lombok, MapStruct, testing libraries included
 - ✅ Strict dependency resolution enabled
 - ✅ Code formatting + coverage reporting
@@ -125,12 +125,12 @@ pluginManagement {
 
 // common/build.gradle.kts
 plugins {
-    id("io.github.platform.java-conventions") version "1.0.0"
+    id("io.github.gobelango.java-conventions") version "1.0.0"
 }
 
 // service-a/build.gradle.kts
 plugins {
-    id("io.github.platform.spring-web-conventions") version "1.0.0"
+    id("io.github.gobelango.spring-web-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -139,7 +139,7 @@ dependencies {
 
 // service-b/build.gradle.kts
 plugins {
-    id("io.github.platform.spring-webflux-conventions") version "1.0.0"
+    id("io.github.gobelango.spring-webflux-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -191,7 +191,7 @@ plugins {
 **Add this:**
 ```kotlin
 plugins {
-    id("io.github.platform.spring-web-conventions") version "1.0.0"
+    id("io.github.gobelango.spring-web-conventions") version "1.0.0"
 }
 ```
 
@@ -331,7 +331,7 @@ Keep the plugin but override specific settings:
 
 ```kotlin
 plugins {
-    id("io.github.platform.spring-web-conventions") version "1.0.0"
+    id("io.github.gobelango.spring-web-conventions") version "1.0.0"
 }
 
 // Temporarily disable Spotless
@@ -408,5 +408,5 @@ The plugins add minimal overhead (~2-5s):
 ## Need Help?
 
 - Check [Troubleshooting Guide](./troubleshooting.md)
-- Review [GitHub Issues](https://github.com/bala-lab-projects/platform-gradle-plugins/issues)
+- Review [GitHub Issues](https://github.com/gobelango/gradle-plugins/issues)
 - See [Examples](../examples/) for common patterns

@@ -1,7 +1,7 @@
 .PHONY: help build test clean publish-local check-versions setup-hooks format-all format-diff format-check spotless-check spotless-apply
 
 help:
-	@echo "Platform Gradle Plugins - Available Commands"
+	@echo "Gradle Plugins - Available Commands"
 	@echo "=============================================="
 	@echo ""
 	@echo "Build & Test:"
@@ -32,11 +32,11 @@ clean:
 	./gradlew clean
 
 publish-local:
-	@echo "📦 Publishing platform-gradle-plugins to Maven Local..."
+	@echo "📦 Publishing gradle-plugins to Maven Local..."
 	@./gradlew publishToMavenLocal
 	@echo ""
 	@echo "✅ Published successfully!"
-	@echo "📍 Location: ~/.m2/repository/io/github/platform/"
+	@echo "📍 Location: ~/.m2/repository/io/github/gobelango/"
 	@echo ""
 	@echo "📝 Use in your projects:"
 	@echo ""
@@ -50,7 +50,7 @@ publish-local:
 	@echo ""
 	@echo "  // build.gradle.kts"
 	@echo "  plugins {"
-	@echo "      id(\"io.github.platform.spring-conventions\") version \"1.0.0\""
+	@echo "      id(\"io.github.gobelango.spring-conventions\") version \"1.0.0\""
 	@echo "  }"
 
 check-versions:
@@ -58,11 +58,11 @@ check-versions:
 
 spotless-check:
 	@echo "🔍 Checking code formatting (Spotless)..."
-	@./gradlew :conventions-plugin:spotlessCheck
+	@./gradlew :plugins:java-conventions:spotlessCheck
 
 spotless-apply:
 	@echo "✨ Auto-fixing code formatting (Spotless)..."
-	@./gradlew :conventions-plugin:spotlessApply
+	@./gradlew :plugins:java-conventions:spotlessApply
 	@echo "✅ Code formatted successfully!"
 
 format-all:

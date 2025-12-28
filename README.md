@@ -1,11 +1,11 @@
-# Platform Gradle Plugins
+# Gradle Plugins
 
 **Production-Ready Gradle Convention Plugins for Java & Spring Boot Applications**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.org/projects/jdk/21/)
-[![Gradle](https://img.shields.io/badge/Gradle-8.14-blue.svg)](https://gradle.org)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Gradle](https://img.shields.io/badge/Gradle-9.2.1-blue.svg)](https://gradle.org)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.1-brightgreen.svg)](https://spring.io/projects/spring-boot)
 
 Reusable Gradle convention plugins that enforce best practices, standardize build configurations, and provide production-ready defaults for Java and Spring Boot projects.
 
@@ -20,12 +20,13 @@ These plugins eliminate boilerplate build configuration and enforce consistent s
 - **Automatic removal of unused imports** for both Java and Kotlin
 - **JaCoCo code coverage** with comprehensive reporting
 - **Lombok** for reducing boilerplate
+- **Apache Commons Lang3** for common utilities (StringUtils, etc.)
 - **MapStruct** for type-safe object mapping
 - **Spring Boot** with dependency management
-- **Centralized version management** via `gradle.properties`
+- **Centralized version management** via Gradle Version Catalog (`gradle/libs.versions.toml`)
 - **Modular plugin architecture** (core, web, webflux)
 - **Strict dependency resolution** (fails on conflicts)
-- **Comprehensive testing setup** (JUnit 5, MockK, Spring Test)
+- **Comprehensive testing setup** (JUnit 5, MockK, Spock, Spring Test)
 
 ---
 
@@ -34,8 +35,8 @@ These plugins eliminate boilerplate build configuration and enforce consistent s
 ### **1. Publish to Maven Local**
 
 ```bash
-git clone https://github.com/bala-lab-projects/platform-gradle-plugins.git
-cd platform-gradle-plugins
+git clone https://github.com/gobelango/gradle-plugins.git
+cd gradle-plugins
 
 # Build and publish
 ./gradlew publishToMavenLocal
@@ -58,7 +59,8 @@ rootProject.name = "my-spring-app"
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.spring-web-conventions") version "1.0.0"
+    kotlin("jvm") version "2.2.20"  // Required: Apply Kotlin plugin first
+    id("io.github.gobelango.spring-web-conventions") version "1.0.0"
 }
 
 group = "com.example"
@@ -74,75 +76,95 @@ dependencies {
 **That's it!** You now have:
 - Java 21 toolchain
 - Lombok support
+- Apache Commons Lang3 utilities
 - Code formatting with Spotless (google-java-format + ktlint)
 - Automatic unused imports removal
 - JaCoCo code coverage
 - Spring Boot with Web (MVC)
 - MapStruct mapping
-- Comprehensive test setup
+- Comprehensive test setup (JUnit 5, MockK, Spock)
 - Strict dependency management
 
 ---
 
 ## Available Plugins
 
-### **Plugin 1: `io.github.platform.java-conventions`**
+### **Plugin 1: `io.github.gobelango.java-conventions`**
 
 Foundation plugin that provides base Java and Kotlin configuration.
 
 **What it configures:**
-- ✅ Java 21 toolchain
-- ✅ Lombok (compile + annotation processing)
-- ✅ Spotless code formatting (google-java-format for Java, ktlint for Kotlin)
-- ✅ Automatic removal of unused imports
-- ✅ JaCoCo code coverage (XML + HTML + CSV)
-- ✅ JUnit Platform for testing
-- ✅ Maven Central + Maven Local repositories
+- Java 21 toolchain
+- Kotlin JVM toolchain (if Kotlin plugin is applied)
+- Lombok (compile + annotation processing)
+- Apache Commons Lang3 for common utilities
+- Spotless code formatting (google-java-format for Java, ktlint for Kotlin)
+- Automatic removal of unused imports
+- JaCoCo code coverage (XML + HTML + CSV)
+- JUnit Platform for testing
+- Maven Central + Maven Local repositories
 
-**Usage:**
+**Important:** This plugin does NOT apply the Kotlin plugin automatically to avoid conflicts in multi-module projects. You must apply Kotlin yourself:
+
+**For single-module projects:**
 ```kotlin
 plugins {
-    id("io.github.platform.java-conventions")
+    kotlin("jvm") version "2.2.20"
+    id("io.github.gobelango.java-conventions") version "1.0.0"
+}
+```
+
+**For multi-module projects:**
+```kotlin
+// Root build.gradle.kts
+plugins {
+    kotlin("jvm") version "2.2.20" apply false
+}
+
+// Subproject build.gradle.kts
+plugins {
+    kotlin("jvm")
+    id("io.github.gobelango.java-conventions")
 }
 ```
 
 ---
 
-### **Plugin 2: `io.github.platform.spring-test-conventions`**
+### **Plugin 2: `io.github.gobelango.spring-test-conventions`**
 
 Adds comprehensive testing support for Spring Boot applications.
 
 **What it configures:**
-- ✅ Applies `java-conventions` automatically
-- ✅ Spring Boot Starter Test (includes JUnit 5, Mockito, AssertJ)
-- ✅ MockK for powerful mocking
-- ✅ JUnit Platform Launcher
-- ✅ Excludes conflicting logging implementations
+- Applies `java-conventions` automatically
+- Spring Boot Starter Test (includes JUnit 5, Mockito, AssertJ)
+- MockK for powerful mocking
+- JUnit Platform Launcher
+- Excludes conflicting logging implementations
 
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.platform.spring-test-conventions")
+    id("io.github.gobelango.spring-test-conventions")
 }
 ```
 
 ---
 
-### **Plugin 3: `io.github.platform.spring-core-conventions`**
+### **Plugin 3: `io.github.gobelango.spring-core-conventions`**
 
 Core Spring Boot setup that's common to all Spring applications.
 
 **What it configures:**
-- ✅ Applies both `java-conventions` and `spring-test-conventions`
-- ✅ Spring Boot plugin (`bootJar`, `bootRun` tasks)
-- ✅ Spring Dependency Management (consistent versions)
-- ✅ MapStruct (type-safe object mapping)
-- ✅ Strict dependency resolution (fails on dynamic versions)
+- Applies both `java-conventions` and `spring-test-conventions`
+- Spring Boot plugin (`bootJar`, `bootRun` tasks)
+- Spring Dependency Management (consistent versions)
+- MapStruct (type-safe object mapping)
+- Strict dependency resolution (fails on dynamic versions)
 
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.platform.spring-core-conventions")
+    id("io.github.gobelango.spring-core-conventions")
 }
 
 dependencies {
@@ -153,20 +175,20 @@ dependencies {
 
 ---
 
-### **Plugin 4: `io.github.platform.spring-web-conventions`**
+### **Plugin 4: `io.github.gobelango.spring-web-conventions`**
 
 Complete setup for Spring Boot Web (MVC) applications.
 
 **What it configures:**
-- ✅ Applies `spring-core-conventions` (includes all base Java and Spring setup)
-- ✅ Spring Boot Starter Web (with embedded Tomcat)
-- ✅ Spring Boot Starter Validation
-- ✅ Spring Boot Starter AOP
+- Applies `spring-core-conventions` (includes all base Java and Spring setup)
+- Spring Boot Starter Web (with embedded Tomcat)
+- Spring Boot Starter Validation
+- Spring Boot Starter AspectJ (AOP support)
 
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.platform.spring-web-conventions")
+    id("io.github.gobelango.spring-web-conventions")
 }
 
 dependencies {
@@ -177,20 +199,20 @@ dependencies {
 
 ---
 
-### **Plugin 5: `io.github.platform.spring-webflux-conventions`**
+### **Plugin 5: `io.github.gobelango.spring-webflux-conventions`**
 
 Complete setup for Spring Boot WebFlux (Reactive) applications.
 
 **What it configures:**
-- ✅ Applies `spring-core-conventions` (includes all base Java and Spring setup)
-- ✅ Spring Boot Starter WebFlux (with Netty)
-- ✅ Spring Boot Starter Validation
-- ✅ Reactor Test for reactive testing
+- Applies `spring-core-conventions` (includes all base Java and Spring setup)
+- Spring Boot Starter WebFlux (with Netty)
+- Spring Boot Starter Validation
+- Reactor Test for reactive testing
 
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.platform.spring-webflux-conventions")
+    id("io.github.gobelango.spring-webflux-conventions")
 }
 
 dependencies {
@@ -206,11 +228,11 @@ dependencies {
 ## Plugin Composition
 
 ```
-io.github.platform.spring-web-conventions
+io.github.gobelango.spring-web-conventions
     │
-    └──> io.github.platform.spring-core-conventions
+    └──> io.github.gobelango.spring-core-conventions
             │
-            ├──> io.github.platform.java-conventions
+            ├──> io.github.gobelango.java-conventions
             │       ├─> java-library
             │       ├─> spotless (google-java-format + ktlint)
             │       ├─> jacoco
@@ -218,7 +240,7 @@ io.github.platform.spring-web-conventions
             │       ├─> Lombok
             │       └─> JUnit Platform
             │
-            ├──> io.github.platform.spring-test-conventions
+            ├──> io.github.gobelango.spring-test-conventions
             │       ├─> Spring Boot Starter Test
             │       ├─> MockK
             │       └─> JUnit Platform Launcher
@@ -228,9 +250,9 @@ io.github.platform.spring-web-conventions
             ├──> MapStruct
             └──> Strict dependency resolution
 
-io.github.platform.spring-webflux-conventions
+io.github.gobelango.spring-webflux-conventions
     │
-    └──> io.github.platform.spring-core-conventions
+    └──> io.github.gobelango.spring-core-conventions
             (same as above)
 ```
 
@@ -240,19 +262,19 @@ io.github.platform.spring-webflux-conventions
 
 This plugin enforces **consistent code formatting** via Spotless with **google-java-format** for Java and **ktlint** for Kotlin.
 
-**Java Formatting (google-java-format 1.31.0):**
+**Java Formatting (google-java-format):**
 - Google Java Format style
 - Automatic removal of unused imports
 - Proper import ordering
 - Trailing whitespace removal
 - Files end with newline
 
-**Kotlin Formatting (ktlint 1.7.1):**
+**Kotlin Formatting (ktlint):**
 - 4-space indentation
-- Max line length: 150 characters
-- Wildcard imports allowed
+- Max line length: 120 characters
 - Trailing commas allowed
 - Automatic removal of unused imports
+- Wildcard imports disallowed (enforces explicit imports)
 
 **Check formatting:**
 ```bash
@@ -302,7 +324,7 @@ tasks.named<JacocoReport>("jacocoTestReport") {
 
 ## Strict Dependency Management
 
-The `spring-conventions` plugin enforces strict dependency resolution to prevent version conflicts and ensure reproducible builds.
+The `spring-core-conventions` plugin enforces strict dependency resolution to prevent version conflicts and ensure reproducible builds.
 
 **What's enforced:**
 ```kotlin
@@ -332,37 +354,47 @@ configurations.all {
 
 ## Dependency Version Management
 
-All dependency versions are centrally managed in `gradle.properties`:
+All dependency versions are centrally managed using **Gradle Version Catalog** in `gradle/libs.versions.toml`.
 
-```properties
-# Spring Boot and Gradle Plugins
-springBootVersion=3.5.7
-springDependencyManagementVersion=1.1.7
+The version catalog provides a modern, type-safe approach to dependency management with:
 
-# Core Libraries
-lombokVersion=1.18.42
-jacksonVersion=2.19.2
-mapstructVersion=1.6.3
+**Structure:**
+- `[versions]` - All version numbers (Spring Boot, Kotlin, libraries, tools)
+- `[libraries]` - Library dependency declarations with version references
+- `[plugins]` - Plugin declarations with version references
+- `[bundles]` - Groups of commonly used dependencies
 
-# Code Quality
-spotlessVersion=8.0.0
-googleJavaFormatVersion=1.31.0
-ktlintVersion=1.7.1
-jacocoVersion=0.8.14
+**Example version catalog structure:**
+```toml
+[versions]
+spring-boot = "..."
+kotlin = "..."
+# ... more versions
 
-# Testing
-mockkVersion=1.14.6
+[libraries]
+spring-boot-gradle-plugin = { module = "...", version.ref = "spring-boot" }
+# ... more libraries
 
-# Swagger
-swaggerAnnotationsVersion=2.2.27
-springdocOpenapiVersion=2.7.0
+[plugins]
+kotlin-jvm = { id = "...", version.ref = "kotlin" }
+# ... more plugins
+
+[bundles]
+spring-web = ["spring-boot-starter-web", "spring-boot-starter-validation", "spring-boot-starter-aspectj"]
+# ... more bundles
 ```
 
-These versions are automatically generated into `GeneratedVersions.kt` and used throughout the plugins. This ensures:
-- ✅ Single source of truth for all versions
-- ✅ Consistent versions across all plugins
-- ✅ Easy version updates via `gradle.properties`
-- ✅ Type-safe version references in Kotlin code
+**Benefits:**
+- **Single source of truth** - All versions defined in one location
+- **Type-safe accessors** - IDE autocomplete for dependencies
+- **Automatic generation** - Versions auto-generated into module-specific version files
+  - `GeneratedVersions.kt` for java-conventions module
+  - `SpringConventionsVersions.kt` for spring-conventions module
+- **Dependency bundles** - Group related dependencies together
+- **Easy updates** - Change version once, applies everywhere
+- **Better IDE support** - Full autocomplete and refactoring support
+
+**To update versions:** Edit `gradle/libs.versions.toml` and rebuild
 
 ---
 
@@ -370,17 +402,19 @@ These versions are automatically generated into `GeneratedVersions.kt` and used 
 
 **What's included:**
 
-| Library | Purpose |
-|---------|---------|
-| JUnit 5 (Jupiter) | Modern testing framework |
-| Spring Boot Test | Spring-specific test utilities |
-| Spring Test | Core Spring testing support |
-| Mockito | Traditional Java mocking |
-| MockK | Kotlin-style mocking (works with Java) |
-| AssertJ | Fluent assertions |
-| Hamcrest | Matcher library |
-| JSONassert | JSON assertion library |
-| JsonPath | JSON path expressions |
+| Library           | Purpose                                      |
+|-------------------|----------------------------------------------|
+| JUnit 5 (Jupiter) | Modern testing framework                     |
+| Spring Boot Test  | Spring-specific test utilities               |
+| Spring Test       | Core Spring testing support                  |
+| Mockito           | Traditional Java mocking                     |
+| MockK             | Kotlin-style mocking (works with Java)       |
+| Spock Framework   | BDD-style testing with given-when-then       |
+| Groovy            | Required for Spock tests                     |
+| AssertJ           | Fluent assertions                            |
+| Hamcrest          | Matcher library                              |
+| JSONassert        | JSON assertion library                       |
+| JsonPath          | JSON path expressions                        |
 
 **Example test:**
 ```java
@@ -438,7 +472,8 @@ public interface OrderMapper {
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.spring-web-conventions") version "1.0.0"
+    kotlin("jvm") version "2.2.20"
+    id("io.github.gobelango.spring-web-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -452,7 +487,8 @@ dependencies {
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.spring-webflux-conventions") version "1.0.0"
+    kotlin("jvm") version "2.2.20"
+    id("io.github.gobelango.spring-webflux-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -466,7 +502,8 @@ dependencies {
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.spring-core-conventions") version "1.0.0"
+    kotlin("jvm") version "2.2.20"
+    id("io.github.gobelango.spring-core-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -480,11 +517,12 @@ dependencies {
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("io.github.platform.java-conventions") version "1.0.0"
+    kotlin("jvm") version "2.2.20"
+    id("io.github.gobelango.java-conventions") version "1.0.0"
 }
 
 dependencies {
-    api("com.fasterxml.jackson.core:jackson-databind")
+    api("tools.jackson.core:jackson-databind")
     implementation("org.apache.commons:commons-lang3")
 }
 ```
@@ -561,9 +599,8 @@ MIT License - see [LICENSE](LICENSE)
 ## Author
 
 **Balamurugan Elangovan**
-Principal Software Engineer | Platform Engineering
 
-[GitHub](https://github.com/bala-lab-projects) | [LinkedIn](https://www.linkedin.com/in/balamurugan-elangovan-53791985/) | mail.bala0224@gmail.com
+[GitHub](https://github.com/gobelango) | [LinkedIn](https://www.linkedin.com/in/balamurugan-elangovan-53791985/) | mail.bala0224@gmail.com
 
 ---
 

@@ -29,19 +29,19 @@ We chose **Spotless** with `google-java-format` for Java and `ktlint` for Kotlin
 
 ### Positive Consequences
 
-- ✅ **Unified tooling** - One Gradle plugin for both Java and Kotlin
-- ✅ **Auto-fix capability** - `spotlessApply` fixes issues automatically
-- ✅ **Removes unused imports** - Eliminates manual cleanup
-- ✅ **IDE-independent** - Works in any environment
-- ✅ **Build integration** - Can enforce in CI/CD pipeline
-- ✅ **Active community** - Well-maintained, frequent updates
-- ✅ **Flexible configuration** - Can customize per language
+- **Unified tooling** - One Gradle plugin for both Java and Kotlin
+- **Auto-fix capability** - `spotlessApply` fixes issues automatically
+- **Removes unused imports** - Eliminates manual cleanup
+- **IDE-independent** - Works in any environment
+- **Build integration** - Can enforce in CI/CD pipeline
+- **Active community** - Well-maintained, frequent updates
+- **Flexible configuration** - Can customize per language
 
 ### Negative Consequences
 
-- ⚠️ **Additional dependency** - One more Gradle plugin
-- ⚠️ **Build time impact** - Adds ~2-5s to build (acceptable)
-- ⚠️ **Learning curve** - Developers need to learn `spotlessApply`
+- **Additional dependency** - One more Gradle plugin
+- **Build time impact** - Adds ~2-5s to build (acceptable)
+- **Learning curve** - Developers need to learn `spotlessApply`
 
 ## Implementation Details
 

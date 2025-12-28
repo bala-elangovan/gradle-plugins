@@ -1,4 +1,4 @@
-# Pre-commit hooks for platform-gradle-plugins
+# Pre-commit hooks for gradle-plugins
 # See https://pre-commit.com for more information
 
 repos:
