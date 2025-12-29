@@ -5,36 +5,13 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
 /**
- * Convention plugin for Spring Boot WebFlux (Reactive) applications with platform-commons autoconfiguration.
+ * Convention plugin for Spring Boot WebFlux (Reactive) applications.
  *
- * This plugin provides complete setup for reactive Spring WebFlux applications:
- * - Spring Boot Starter WebFlux (with Netty)
- * - Spring Boot Starter Validation
- * - Reactor Test for reactive testing
- * - Platform Commons WebFlux Starter (autoconfiguration, reactive REST clients, security, logging, metrics)
- * - All Spring core conventions
+ * Configures Spring Boot Starter WebFlux (Netty), Validation, and Reactor Test.
+ * Includes platform-commons WebFlux starter for autoconfiguration, reactive REST clients, security, and logging.
+ * Automatically applies spring-core-conventions.
  *
- * **Usage:**
- * ```
- * plugins {
- *     id("io.github.balaelangovan.spring-webflux-conventions")
- * }
- *
- * dependencies {
- *     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
- *     // Add your specific dependencies
- * }
- * ```
- *
- * **What's Included from Platform Commons:**
- * - Auto-configuration for reactive logging (MDC, transaction IDs)
- * - Global exception handlers for WebFlux
- * - Security (Authorization annotation, header-based auth)
- * - OAuth2-enabled WebClient REST client
- * - Metrics collection
- * - Standardized error responses
- *
- * **Note:** WebFlux uses Netty instead of Tomcat. Don't mix with spring-web-conventions.
+ * Note: WebFlux uses Netty instead of Tomcat. Do not mix with spring-web-conventions.
  */
 class SpringWebFluxConventionsPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -45,27 +22,26 @@ class SpringWebFluxConventionsPlugin : Plugin<Project> {
         }
     }
 
+    /**
+     * Applies SpringCoreConventionsPlugin by class reference to avoid plugin resolution issues.
+     */
     private fun Project.applyRequiredPlugins() {
-        // Apply by class reference instead of ID to avoid plugin resolution issues in consumer projects
         pluginManager.apply(SpringCoreConventionsPlugin::class.java)
     }
 
+    /**
+     * Adds Spring Boot WebFlux, Validation starters and Reactor Test for reactive testing.
+     */
     private fun Project.addWebFluxDependencies() {
         dependencies {
-            // Spring Boot WebFlux - reactive with Netty
             add("implementation", "org.springframework.boot:spring-boot-starter-webflux")
-
-            // Validation
             add("implementation", "org.springframework.boot:spring-boot-starter-validation")
-
-            // Reactor Test for testing reactive streams
             add("testImplementation", "io.projectreactor:reactor-test")
         }
     }
 
     /**
-     * Automatically adds platform-commons spring-boot-webflux-starter dependency.
-     * This provides autoconfiguration, reactive REST clients, security, logging, and metrics.
+     * Adds platform-commons WebFlux starter for autoconfiguration, reactive REST clients, security, and logging.
      */
     private fun Project.addPlatformCommonsDependency() {
         dependencies {

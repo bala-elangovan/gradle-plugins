@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     implementation(libs.spotless)
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
+    implementation(libs.kotlin.gradle.plugin)
 }
 
 gradlePlugin {
@@ -50,7 +50,6 @@ val generateVersions by tasks.registering {
     outputs.file(outputFile)
 
     doLast {
-        // Simple TOML parser for version catalog
         val versions = mutableMapOf<String, String>()
         var inVersionsSection = false
 
@@ -75,25 +74,14 @@ val generateVersions by tasks.registering {
         val content =
             buildString {
                 appendLine("// AUTO-GENERATED - DO NOT EDIT")
-                appendLine("// Generated from gradle/libs.versions.toml")
                 appendLine("package io.github.balaelangovan.gradle")
                 appendLine()
                 appendLine("object GeneratedVersions {")
-                appendLine("    const val SPRING_BOOT = \"${versions["spring-boot"]}\"")
-                appendLine("    const val SPRING_DEPENDENCY_MANAGEMENT = \"${versions["spring-dependency-management"]}\"")
                 appendLine("    const val LOMBOK = \"${versions["lombok"]}\"")
-                appendLine("    const val JACKSON = \"${versions["jackson"]}\"")
-                appendLine("    const val MAPSTRUCT = \"${versions["mapstruct"]}\"")
                 appendLine("    const val COMMONS_LANG3 = \"${versions["commons-lang3"]}\"")
-                appendLine("    const val SPOTLESS = \"${versions["spotless"]}\"")
                 appendLine("    const val GOOGLE_JAVA_FORMAT = \"${versions["google-java-format"]}\"")
                 appendLine("    const val KTLINT = \"${versions["ktlint"]}\"")
                 appendLine("    const val JACOCO = \"${versions["jacoco"]}\"")
-                appendLine("    const val MOCKK = \"${versions["mockk"]}\"")
-                appendLine("    const val GROOVY = \"${versions["groovy"]}\"")
-                appendLine("    const val SPOCK = \"${versions["spock"]}\"")
-                appendLine("    const val SWAGGER_ANNOTATIONS = \"${versions["swagger-annotations"]}\"")
-                appendLine("    const val SPRINGDOC_OPENAPI = \"${versions["springdoc-openapi"]}\"")
                 appendLine("}")
             }
 
@@ -128,7 +116,6 @@ configure<SpotlessExtension> {
     }
 }
 
-// Ensure Spotless runs after version generation
 tasks.named("spotlessKotlin") {
     dependsOn(generateVersions)
 }

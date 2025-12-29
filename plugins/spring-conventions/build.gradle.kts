@@ -16,20 +16,10 @@ repositories {
     gradlePluginPortal()
 }
 
-// Platform Commons version - update this when platform-commons is released
-val platformCommonsVersion = "1.0.0-SNAPSHOT"
-
 dependencies {
-    // Dependency on java-conventions for plugin class references
-    // This allows Spring plugins to apply JavaConventionsPlugin by class
     implementation(project(":plugins:java-conventions"))
-
-    // Spring Boot dependencies
     implementation(libs.spring.boot.gradle.plugin)
     implementation(libs.spring.dependency.management)
-
-    // Note: Platform Commons and other dependencies are NOT required at compile time
-    // They are injected as strings into user projects at runtime when plugins are applied
 }
 
 gradlePlugin {
@@ -74,7 +64,6 @@ kotlin {
     jvmToolchain(21)
 }
 
-// Generate version constants from the version catalog
 val generateVersions by tasks.registering {
     val outputFile = file("src/main/kotlin/io/github/balaelangovan/gradle/spring/SpringConventionsVersions.kt")
 
@@ -85,27 +74,15 @@ val generateVersions by tasks.registering {
         outputFile.writeText(
             """
             // AUTO-GENERATED - DO NOT EDIT
-            // This file is generated from gradle/libs.versions.toml
             package io.github.balaelangovan.gradle.spring
 
-            /**
-             * Dependency versions for Spring conventions plugins.
-             * These versions are injected into user projects at runtime.
-             */
             object SpringConventionsVersions {
-                // Spring Boot
                 const val SPRING_BOOT = "${libs.versions.spring.boot.get()}"
-
-                // Core Libraries
                 const val MAPSTRUCT = "${libs.versions.mapstruct.get()}"
-
-                // Testing
                 const val MOCKK = "${libs.versions.mockk.get()}"
                 const val GROOVY = "${libs.versions.groovy.get()}"
                 const val SPOCK = "${libs.versions.spock.get()}"
-
-                // Platform Commons
-                const val PLATFORM_COMMONS = "$platformCommonsVersion"
+                const val PLATFORM_COMMONS = "${libs.versions.platform.commons.get()}"
             }
 
             """.trimIndent(),
@@ -140,7 +117,6 @@ configure<SpotlessExtension> {
     }
 }
 
-// Ensure Spotless runs after version generation
 tasks.named("spotlessKotlin") {
     dependsOn(generateVersions)
 }

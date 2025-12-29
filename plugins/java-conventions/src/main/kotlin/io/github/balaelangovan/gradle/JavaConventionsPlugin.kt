@@ -16,44 +16,13 @@ import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
 
 /**
- * Convention plugin that provides base Java and Kotlin configuration for all projects.
+ * Convention plugin providing base Java and Kotlin configuration.
  *
- * This plugin establishes foundational build standards including:
- * - Java 21 toolchain configuration
- * - Kotlin JVM toolchain configuration (if Kotlin plugin is applied)
- * - Lombok support for reducing boilerplate code
- * - Google Java Format enforcement via Spotless
- * - Kotlin formatting with ktlint via Spotless (with unused imports removal)
- * - Apache Commons Lang3 for common utilities
- * - JaCoCo code coverage reporting (XML, HTML, CSV)
- * - JUnit Platform for modern testing
- * - Standard repository configuration
+ * Configures Java 21 toolchain, Lombok, Apache Commons Lang3, Spotless formatting
+ * (google-java-format + ktlint), JaCoCo coverage, and JUnit Platform testing.
  *
- * **Important:** This plugin does NOT apply the Kotlin plugin automatically to avoid conflicts
- * in multi-module projects. Apply Kotlin in your root build.gradle.kts with `apply false`:
- *
- * ```kotlin
- * // Root build.gradle.kts
- * plugins {
- *     kotlin("jvm") version "2.2.20" apply false
- * }
- *
- * // Subproject build.gradle.kts
- * plugins {
- *     kotlin("jvm")
- *     id("io.github.balaelangovan.java-conventions")
- * }
- * ```
- *
- * **Version Management:**
- * Dependency versions are managed in `gradle/libs.versions.toml` (Gradle Version Catalog).
- *
- * Key dependencies configured:
- * - Lombok for annotation processing
- * - Apache Commons Lang3 for common utilities
- * - Spotless with google-java-format for Java formatting
- * - Spotless with ktlint for Kotlin formatting
- * - JaCoCo for code coverage analysis
+ * The Kotlin plugin is NOT applied automatically to avoid conflicts in multi-module projects.
+ * Apply it in your root build.gradle.kts with `apply false` and then apply to individual modules.
  */
 class JavaConventionsPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -70,9 +39,9 @@ class JavaConventionsPlugin : Plugin<Project> {
 
     /**
      * Applies java-library, spotless, and jacoco plugins.
-     * Note: Kotlin plugin is NOT applied automatically to avoid conflicts in multi-module projects.
-     * Users should apply Kotlin plugin in their root build.gradle.kts with 'apply false' and then
-     * apply it to individual modules as needed. The convention plugin will configure Kotlin if present.
+     *
+     * The Kotlin plugin must be applied by the consumer project to avoid version conflicts.
+     * If present, this plugin will configure Kotlin JVM toolchain automatically.
      */
     private fun Project.applyPlugins() {
         pluginManager.apply("java-library")
@@ -80,7 +49,9 @@ class JavaConventionsPlugin : Plugin<Project> {
         pluginManager.apply("jacoco")
     }
 
-    /** Configures Java 21 toolchain for both Java and Kotlin. */
+    /**
+     * Configures Java 21 toolchain and Kotlin JVM toolchain if Kotlin plugin is applied.
+     */
     private fun Project.configureJavaToolchain() {
         extensions.configure<JavaPluginExtension> {
             toolchain {
@@ -88,7 +59,6 @@ class JavaConventionsPlugin : Plugin<Project> {
             }
         }
 
-        // Configure Kotlin JVM toolchain (configured after the Kotlin plugin is applied)
         pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension> {
                 jvmToolchain(21)
@@ -96,7 +66,9 @@ class JavaConventionsPlugin : Plugin<Project> {
         }
     }
 
-    /** Adds Maven Central and Maven Local repositories. */
+    /**
+     * Adds Maven Central and Maven Local repositories.
+     */
     private fun Project.configureRepositories() {
         repositories {
             mavenCentral()
@@ -104,47 +76,37 @@ class JavaConventionsPlugin : Plugin<Project> {
         }
     }
 
-    /** Configures common dependencies: Lombok and Apache Commons Lang3. */
+    /**
+     * Configures Lombok for compile and test, and Apache Commons Lang3 as implementation dependency.
+     */
     private fun Project.configureDependencies() {
         dependencies {
-            // Lombok for reducing boilerplate
             add("compileOnly", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
             add("annotationProcessor", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
             add("testCompileOnly", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
             add("testAnnotationProcessor", "org.projectlombok:lombok:${GeneratedVersions.LOMBOK}")
-
-            // Apache Commons Lang3 for common utilities (StringUtils, etc.)
             add("implementation", "org.apache.commons:commons-lang3:${GeneratedVersions.COMMONS_LANG3}")
         }
     }
 
-    /** Configures Spotless with google-java-format for Java and ktlint for Kotlin. */
+    /**
+     * Configures Spotless with google-java-format for Java and ktlint for Kotlin.
+     *
+     * Java: google-java-format with unused imports removal and import ordering.
+     * Kotlin: ktlint with 4-space indent, 120 char line length, and trailing commas allowed.
+     */
     private fun Project.configureSpotless() {
         extensions.configure<SpotlessExtension> {
-            // Configure Java formatting with google-java-format
             java {
-                // Use google-java-format
                 googleJavaFormat(GeneratedVersions.GOOGLE_JAVA_FORMAT)
-
-                // Target all Java source files
                 target("src/**/*.java")
-
-                // Remove unused imports
                 removeUnusedImports()
-
-                // Format imports
                 importOrder()
-
-                // Trim trailing whitespace
                 trimTrailingWhitespace()
-
-                // Ensure files end with a newline
                 endWithNewline()
             }
 
-            // Configure Kotlin formatting with ktlint
             kotlin {
-                // Use ktlint
                 ktlint(GeneratedVersions.KTLINT)
                     .editorConfigOverride(
                         mapOf(
@@ -154,20 +116,16 @@ class JavaConventionsPlugin : Plugin<Project> {
                             "ij_kotlin_allow_trailing_comma_on_call_site" to "true",
                         ),
                     )
-
-                // Target all Kotlin source files
                 target("src/**/*.kt", "**/*.kts")
-
-                // Trim trailing whitespace
                 trimTrailingWhitespace()
-
-                // Ensure files end with a newline
                 endWithNewline()
             }
         }
     }
 
-    /** Configures JaCoCo code coverage with XML, HTML, and CSV reports. */
+    /**
+     * Configures JaCoCo with XML, HTML, and CSV report formats.
+     */
     private fun Project.configureJacoco() {
         extensions.configure<JacocoPluginExtension> {
             toolVersion = GeneratedVersions.JACOCO
@@ -188,18 +146,15 @@ class JavaConventionsPlugin : Plugin<Project> {
         }
     }
 
-    /** Configures test tasks with JUnit Platform, parallel execution, and coverage reporting. */
+    /**
+     * Configures JUnit Platform testing with parallel execution and automatic coverage reporting.
+     */
     private fun Project.configureTesting() {
         tasks.withType<Test>().configureEach {
             useJUnitPlatform()
-
-            // Run tests with parallel execution
             maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
-
-            // Always generate a coverage report after tests
             finalizedBy(tasks.named("jacocoTestReport"))
 
-            // Configure test logging
             testLogging {
                 events("passed", "skipped", "failed")
                 exceptionFormat = TestExceptionFormat.FULL

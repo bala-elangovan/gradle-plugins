@@ -5,34 +5,11 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
 /**
- * Convention plugin for Spring Boot Web (MVC) applications with platform-commons autoconfiguration.
+ * Convention plugin for Spring Boot Web (MVC) applications.
  *
- * This plugin provides complete setup for traditional Spring MVC/REST applications:
- * - Spring Boot Starter Web (with embedded Tomcat)
- * - Spring Boot Starter Validation
- * - Spring Boot Starter AspectJ (AOP support)
- * - Platform Commons WebMVC Starter (autoconfiguration, REST clients, security, logging, metrics)
- * - All Spring core conventions
- *
- * **Usage:**
- * ```
- * plugins {
- *     id("io.github.balaelangovan.spring-web-conventions")
- * }
- *
- * dependencies {
- *     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
- *     // Add your specific dependencies
- * }
- * ```
- *
- * **What's Included from Platform Commons:**
- * - Auto-configuration for logging (MDC, transaction IDs)
- * - Global exception handlers
- * - Security (Authorization annotation, header-based auth)
- * - OAuth2-enabled REST client
- * - Metrics collection
- * - Standardized error responses
+ * Configures Spring Boot Starter Web (Tomcat), Validation, and AspectJ.
+ * Includes platform-commons WebMVC starter for autoconfiguration, REST clients, security, and logging.
+ * Automatically applies spring-core-conventions.
  */
 class SpringWebConventionsPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -43,27 +20,26 @@ class SpringWebConventionsPlugin : Plugin<Project> {
         }
     }
 
+    /**
+     * Applies SpringCoreConventionsPlugin by class reference to avoid plugin resolution issues.
+     */
     private fun Project.applyRequiredPlugins() {
-        // Apply by class reference instead of ID to avoid plugin resolution issues in consumer projects
         pluginManager.apply(SpringCoreConventionsPlugin::class.java)
     }
 
+    /**
+     * Adds Spring Boot Web, Validation, and AspectJ starters.
+     */
     private fun Project.addWebDependencies() {
         dependencies {
-            // Spring Boot Web - traditional MVC with Tomcat
             add("implementation", "org.springframework.boot:spring-boot-starter-web")
-
-            // Validation
             add("implementation", "org.springframework.boot:spring-boot-starter-validation")
-
-            // AspectJ support (renamed from spring-boot-starter-aop in Spring Boot 4)
             add("implementation", "org.springframework.boot:spring-boot-starter-aspectj")
         }
     }
 
     /**
-     * Automatically adds platform-commons spring-boot-webmvc-starter dependency.
-     * This provides autoconfiguration, REST clients, security, logging, and metrics.
+     * Adds platform-commons WebMVC starter for autoconfiguration, REST clients, security, and logging.
      */
     private fun Project.addPlatformCommonsDependency() {
         dependencies {
