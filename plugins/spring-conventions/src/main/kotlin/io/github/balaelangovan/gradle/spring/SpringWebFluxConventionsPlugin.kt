@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.dependencies
  * Convention plugin for Spring Boot WebFlux (Reactive) applications.
  *
  * Configures Spring Boot Starter WebFlux (Netty), Validation, and Reactor Test.
- * Includes platform-commons WebFlux starter for autoconfiguration, reactive REST clients, security, and logging.
+ * Includes spring-commons WebFlux starter for autoconfiguration, reactive REST clients, security, and logging.
  * Automatically applies spring-core-conventions.
  *
  * Note: WebFlux uses Netty instead of Tomcat. Do not mix with spring-web-conventions.
@@ -18,7 +18,7 @@ class SpringWebFluxConventionsPlugin : Plugin<Project> {
         with(project) {
             applyRequiredPlugins()
             addWebFluxDependencies()
-            addPlatformCommonsDependency()
+            addSpringCommonsDependency()
         }
     }
 
@@ -41,11 +41,11 @@ class SpringWebFluxConventionsPlugin : Plugin<Project> {
     }
 
     /**
-     * Adds platform-commons WebFlux starter for autoconfiguration, reactive REST clients, security, and logging.
+     * Adds spring-commons WebFlux starter for autoconfiguration, reactive REST clients, security, and logging.
      */
-    private fun Project.addPlatformCommonsDependency() {
+    private fun Project.addSpringCommonsDependency() {
         dependencies {
-            add("implementation", "io.github.platform:spring-boot-webflux-starter:${SpringConventionsVersions.PLATFORM_COMMONS}")
+            add("implementation", "io.github.balaelangovan:spring-boot-webflux-starter:${SpringConventionsVersions.SPRING_COMMONS}")
         }
     }
 }

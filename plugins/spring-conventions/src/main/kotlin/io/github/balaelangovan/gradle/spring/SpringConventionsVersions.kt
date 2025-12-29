@@ -7,5 +7,5 @@ object SpringConventionsVersions {
     const val MOCKK = "1.14.7"
     const val GROOVY = "5.0.3"
     const val SPOCK = "2.4-groovy-5.0"
-    const val PLATFORM_COMMONS = "1.0.0-SNAPSHOT"
+    const val SPRING_COMMONS = "1.0.0-SNAPSHOT"
 }

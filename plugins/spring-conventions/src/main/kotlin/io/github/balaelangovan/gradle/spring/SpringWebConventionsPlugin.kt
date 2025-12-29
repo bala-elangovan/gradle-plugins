@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.dependencies
  * Convention plugin for Spring Boot Web (MVC) applications.
  *
  * Configures Spring Boot Starter Web (Tomcat), Validation, and AspectJ.
- * Includes platform-commons WebMVC starter for autoconfiguration, REST clients, security, and logging.
+ * Includes spring-commons WebMVC starter for autoconfiguration, REST clients, security, and logging.
  * Automatically applies spring-core-conventions.
  */
 class SpringWebConventionsPlugin : Plugin<Project> {
@@ -16,7 +16,7 @@ class SpringWebConventionsPlugin : Plugin<Project> {
         with(project) {
             applyRequiredPlugins()
             addWebDependencies()
-            addPlatformCommonsDependency()
+            addSpringCommonsDependency()
         }
     }
 
@@ -39,11 +39,11 @@ class SpringWebConventionsPlugin : Plugin<Project> {
     }
 
     /**
-     * Adds platform-commons WebMVC starter for autoconfiguration, REST clients, security, and logging.
+     * Adds spring-commons WebMVC starter for autoconfiguration, REST clients, security, and logging.
      */
-    private fun Project.addPlatformCommonsDependency() {
+    private fun Project.addSpringCommonsDependency() {
         dependencies {
-            add("implementation", "io.github.platform:spring-boot-webmvc-starter:${SpringConventionsVersions.PLATFORM_COMMONS}")
+            add("implementation", "io.github.balaelangovan:spring-boot-webmvc-starter:${SpringConventionsVersions.SPRING_COMMONS}")
         }
     }
 }

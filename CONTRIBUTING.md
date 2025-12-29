@@ -182,28 +182,28 @@ pre-commit run ktlint --all-files
 gradle-plugins/
 ├── plugins/
 │   ├── java-conventions/
-│   │   ├── src/main/kotlin/io/github/platform/gradle/
-│   │   │   ├── JavaConventionsPlugin.kt      # Base Java configuration
-│   │   │   └── GeneratedVersions.kt          # Auto-generated version constants
-│   │   └── build.gradle.kts                  # Java conventions plugin build config
+│   │   ├── src/main/kotlin/io/github/balaelangovan/gradle/
+│   │   │   ├── JavaConventionsPlugin.kt
+│   │   │   └── GeneratedVersions.kt (auto-generated)
+│   │   └── build.gradle.kts
 │   └── spring-conventions/
-│       ├── src/main/kotlin/io/github/platform/gradle/spring/
-│       │   ├── SpringTestConventionsPlugin.kt    # Spring test configuration
-│       │   ├── SpringCoreConventionsPlugin.kt    # Core Spring Boot setup
-│       │   ├── SpringWebConventionsPlugin.kt     # Spring MVC/REST configuration
-│       │   ├── SpringWebFluxConventionsPlugin.kt # Spring WebFlux/Reactive configuration
-│       │   └── PlatformCommonsVersions.kt        # Auto-generated platform-commons version
-│       └── build.gradle.kts                      # Spring conventions plugin build config
-├── build.gradle.kts                              # Root build configuration
+│       ├── src/main/kotlin/io/github/balaelangovan/gradle/spring/
+│       │   ├── SpringTestConventionsPlugin.kt
+│       │   ├── SpringCoreConventionsPlugin.kt
+│       │   ├── SpringWebConventionsPlugin.kt
+│       │   ├── SpringWebFluxConventionsPlugin.kt
+│       │   └── SpringConventionsVersions.kt (auto-generated)
+│       └── build.gradle.kts
+├── build.gradle.kts
 └── gradle/
-    └── libs.versions.toml                        # Centralized version management
+    └── libs.versions.toml
 ```
 
 ### Adding a New Plugin
 
 1. Create a new plugin class in:
-   - `plugins/java-conventions/src/main/kotlin/io/github/platform/gradle/` for base Java plugins
-   - `plugins/spring-conventions/src/main/kotlin/io/github/platform/gradle/spring/` for Spring-specific plugins
+   - `plugins/java-conventions/src/main/kotlin/io/github/balaelangovan/gradle/` for base Java plugins
+   - `plugins/spring-conventions/src/main/kotlin/io/github/balaelangovan/gradle/spring/` for Spring-specific plugins
 2. Register it in the respective module's `build.gradle.kts` under `gradlePlugin.plugins`
 3. Add tests if applicable
 4. Update README.md with usage instructions
@@ -212,7 +212,7 @@ gradle-plugins/
 
 All dependency versions are centralized in `gradle/libs.versions.toml` (Gradle Version Catalog) and auto-generated into:
 - `GeneratedVersions.kt` in the java-conventions module
-- `PlatformCommonsVersions.kt` in the spring-conventions module
+- `SpringConventionsVersions.kt` in the spring-conventions module
 
 To update:
 

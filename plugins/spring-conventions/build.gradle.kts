@@ -42,14 +42,14 @@ gradlePlugin {
             id = "io.github.balaelangovan.spring-web-conventions"
             implementationClass = "io.github.balaelangovan.gradle.spring.SpringWebConventionsPlugin"
             displayName = "Spring Web Conventions Plugin"
-            description = "Provides Spring Boot Web (MVC) configuration with platform-commons auto-configuration"
+            description = "Provides Spring Boot Web (MVC) configuration with spring-commons auto-configuration"
         }
 
         register("springWebFluxConventions") {
             id = "io.github.balaelangovan.spring-webflux-conventions"
             implementationClass = "io.github.balaelangovan.gradle.spring.SpringWebFluxConventionsPlugin"
             displayName = "Spring WebFlux Conventions Plugin"
-            description = "Provides Spring Boot WebFlux (Reactive) configuration with platform-commons auto-configuration"
+            description = "Provides Spring Boot WebFlux (Reactive) configuration with spring-commons auto-configuration"
         }
     }
 }
@@ -82,7 +82,7 @@ val generateVersions by tasks.registering {
                 const val MOCKK = "${libs.versions.mockk.get()}"
                 const val GROOVY = "${libs.versions.groovy.get()}"
                 const val SPOCK = "${libs.versions.spock.get()}"
-                const val PLATFORM_COMMONS = "${libs.versions.platform.commons.get()}"
+                const val SPRING_COMMONS = "${libs.versions.spring.commons.get()}"
             }
 
             """.trimIndent(),
