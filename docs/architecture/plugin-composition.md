@@ -191,13 +191,13 @@ gradle-plugins/
 ├── plugins/
 │   ├── java-conventions/          # Base Java/Kotlin conventions
 │   │   ├── src/main/kotlin/
-│   │   │   └── io/github/gobelango/gradle/
+│   │   │   └── io/github/balaelangovan/gradle/
 │   │   │       ├── JavaConventionsPlugin.kt
 │   │   │       └── GeneratedVersions.kt (auto-generated)
 │   │   └── build.gradle.kts
 │   └── spring-conventions/        # Spring Boot conventions
 │       ├── src/main/kotlin/
-│       │   └── io/github/gobelango/gradle/spring/
+│       │   └── io/github/balaelangovan/gradle/spring/
 │       │       ├── SpringTestConventionsPlugin.kt
 │       │       ├── SpringCoreConventionsPlugin.kt
 │       │       ├── SpringWebConventionsPlugin.kt

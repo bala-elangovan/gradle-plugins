@@ -1,4 +1,4 @@
-package io.github.gobelango.gradle
+package io.github.balaelangovan.gradle
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.Plugin
@@ -41,7 +41,7 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
  * // Subproject build.gradle.kts
  * plugins {
  *     kotlin("jvm")
- *     id("io.github.gobelango.java-conventions")
+ *     id("io.github.balaelangovan.java-conventions")
  * }
  * ```
  *

@@ -1,4 +1,4 @@
-package io.github.gobelango.gradle.spring
+package io.github.balaelangovan.gradle.spring
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -21,7 +21,7 @@ import org.gradle.kotlin.dsl.dependencies
  * **Usage:**
  * ```
  * plugins {
- *     id("io.github.gobelango.spring-core-conventions")
+ *     id("io.github.balaelangovan.spring-core-conventions")
  * }
  * ```
  */
@@ -36,7 +36,7 @@ class SpringCoreConventionsPlugin : Plugin<Project> {
 
     private fun Project.applyRequiredPlugins() {
         // Apply by class reference instead of ID to avoid plugin resolution issues in consumer projects
-        pluginManager.apply(io.github.gobelango.gradle.JavaConventionsPlugin::class.java)
+        pluginManager.apply(io.github.balaelangovan.gradle.JavaConventionsPlugin::class.java)
         pluginManager.apply(SpringTestConventionsPlugin::class.java)
         pluginManager.apply("org.springframework.boot")
         pluginManager.apply("io.spring.dependency-management")

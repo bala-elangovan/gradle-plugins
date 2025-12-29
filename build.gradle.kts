@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
 }
 
-group = "io.github.gobelango"
+group = "io.github.balaelangovan"
 version = "1.0.0"
 
 repositories {

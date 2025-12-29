@@ -36,7 +36,7 @@ publish-local:
 	@./gradlew publishToMavenLocal
 	@echo ""
 	@echo "✅ Published successfully!"
-	@echo "📍 Location: ~/.m2/repository/io/github/gobelango/"
+	@echo "📍 Location: ~/.m2/repository/io/github/balaelangovan/"
 	@echo ""
 	@echo "📝 Use in your projects:"
 	@echo ""
@@ -50,7 +50,7 @@ publish-local:
 	@echo ""
 	@echo "  // build.gradle.kts"
 	@echo "  plugins {"
-	@echo "      id(\"io.github.gobelango.spring-conventions\") version \"1.0.0\""
+	@echo "      id(\"io.github.balaelangovan.spring-conventions\") version \"1.0.0\""
 	@echo "  }"
 
 check-versions:

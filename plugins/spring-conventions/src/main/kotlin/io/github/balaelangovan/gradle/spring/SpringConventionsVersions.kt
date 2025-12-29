@@ -1,6 +1,6 @@
 // AUTO-GENERATED - DO NOT EDIT
 // This file is generated from gradle/libs.versions.toml
-package io.github.gobelango.gradle.spring
+package io.github.balaelangovan.gradle.spring
 
 /**
  * Dependency versions for Spring conventions plugins.

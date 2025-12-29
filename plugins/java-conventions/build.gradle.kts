@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
-group = "io.github.gobelango"
+group = "io.github.balaelangovan"
 version = "1.0.0"
 
 repositories {
@@ -24,8 +24,8 @@ dependencies {
 gradlePlugin {
     plugins {
         register("javaConventions") {
-            id = "io.github.gobelango.java-conventions"
-            implementationClass = "io.github.gobelango.gradle.JavaConventionsPlugin"
+            id = "io.github.balaelangovan.java-conventions"
+            implementationClass = "io.github.balaelangovan.gradle.JavaConventionsPlugin"
             displayName = "Java Conventions Plugin"
             description = "Provides base Java and Kotlin configuration with Lombok, Spotless (google-java-format, ktlint), and JaCoCo"
         }
@@ -44,7 +44,7 @@ kotlin {
 
 val generateVersions by tasks.registering {
     val catalogFile = rootProject.file("gradle/libs.versions.toml")
-    val outputFile = file("src/main/kotlin/io/github/gobelango/gradle/GeneratedVersions.kt")
+    val outputFile = file("src/main/kotlin/io/github/balaelangovan/gradle/GeneratedVersions.kt")
 
     inputs.file(catalogFile)
     outputs.file(outputFile)
@@ -76,7 +76,7 @@ val generateVersions by tasks.registering {
             buildString {
                 appendLine("// AUTO-GENERATED - DO NOT EDIT")
                 appendLine("// Generated from gradle/libs.versions.toml")
-                appendLine("package io.github.gobelango.gradle")
+                appendLine("package io.github.balaelangovan.gradle")
                 appendLine()
                 appendLine("object GeneratedVersions {")
                 appendLine("    const val SPRING_BOOT = \"${versions["spring-boot"]}\"")

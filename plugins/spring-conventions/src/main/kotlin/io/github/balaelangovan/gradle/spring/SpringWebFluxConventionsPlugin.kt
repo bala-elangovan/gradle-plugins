@@ -1,4 +1,4 @@
-package io.github.gobelango.gradle.spring
+package io.github.balaelangovan.gradle.spring
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -17,7 +17,7 @@ import org.gradle.kotlin.dsl.dependencies
  * **Usage:**
  * ```
  * plugins {
- *     id("io.github.gobelango.spring-webflux-conventions")
+ *     id("io.github.balaelangovan.spring-webflux-conventions")
  * }
  *
  * dependencies {

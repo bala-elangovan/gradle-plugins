@@ -35,7 +35,7 @@ These plugins eliminate boilerplate build configuration and enforce consistent s
 ### **1. Publish to Maven Local**
 
 ```bash
-git clone https://github.com/gobelango/gradle-plugins.git
+git clone https://github.com/bala-elangovan/gradle-plugins.git
 cd gradle-plugins
 
 # Build and publish
@@ -60,7 +60,7 @@ rootProject.name = "my-spring-app"
 // build.gradle.kts
 plugins {
     kotlin("jvm") version "2.2.20"  // Required: Apply Kotlin plugin first
-    id("io.github.gobelango.spring-web-conventions") version "1.0.0"
+    id("io.github.balaelangovan.spring-web-conventions") version "1.0.0"
 }
 
 group = "com.example"
@@ -89,7 +89,7 @@ dependencies {
 
 ## Available Plugins
 
-### **Plugin 1: `io.github.gobelango.java-conventions`**
+### **Plugin 1: `io.github.balaelangovan.java-conventions`**
 
 Foundation plugin that provides base Java and Kotlin configuration.
 
@@ -110,7 +110,7 @@ Foundation plugin that provides base Java and Kotlin configuration.
 ```kotlin
 plugins {
     kotlin("jvm") version "2.2.20"
-    id("io.github.gobelango.java-conventions") version "1.0.0"
+    id("io.github.balaelangovan.java-conventions") version "1.0.0"
 }
 ```
 
@@ -124,13 +124,13 @@ plugins {
 // Subproject build.gradle.kts
 plugins {
     kotlin("jvm")
-    id("io.github.gobelango.java-conventions")
+    id("io.github.balaelangovan.java-conventions")
 }
 ```
 
 ---
 
-### **Plugin 2: `io.github.gobelango.spring-test-conventions`**
+### **Plugin 2: `io.github.balaelangovan.spring-test-conventions`**
 
 Adds comprehensive testing support for Spring Boot applications.
 
@@ -144,13 +144,13 @@ Adds comprehensive testing support for Spring Boot applications.
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.gobelango.spring-test-conventions")
+    id("io.github.balaelangovan.spring-test-conventions")
 }
 ```
 
 ---
 
-### **Plugin 3: `io.github.gobelango.spring-core-conventions`**
+### **Plugin 3: `io.github.balaelangovan.spring-core-conventions`**
 
 Core Spring Boot setup that's common to all Spring applications.
 
@@ -164,7 +164,7 @@ Core Spring Boot setup that's common to all Spring applications.
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.gobelango.spring-core-conventions")
+    id("io.github.balaelangovan.spring-core-conventions")
 }
 
 dependencies {
@@ -175,7 +175,7 @@ dependencies {
 
 ---
 
-### **Plugin 4: `io.github.gobelango.spring-web-conventions`**
+### **Plugin 4: `io.github.balaelangovan.spring-web-conventions`**
 
 Complete setup for Spring Boot Web (MVC) applications.
 
@@ -188,7 +188,7 @@ Complete setup for Spring Boot Web (MVC) applications.
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.gobelango.spring-web-conventions")
+    id("io.github.balaelangovan.spring-web-conventions")
 }
 
 dependencies {
@@ -199,7 +199,7 @@ dependencies {
 
 ---
 
-### **Plugin 5: `io.github.gobelango.spring-webflux-conventions`**
+### **Plugin 5: `io.github.balaelangovan.spring-webflux-conventions`**
 
 Complete setup for Spring Boot WebFlux (Reactive) applications.
 
@@ -212,7 +212,7 @@ Complete setup for Spring Boot WebFlux (Reactive) applications.
 **Usage:**
 ```kotlin
 plugins {
-    id("io.github.gobelango.spring-webflux-conventions")
+    id("io.github.balaelangovan.spring-webflux-conventions")
 }
 
 dependencies {
@@ -228,11 +228,11 @@ dependencies {
 ## Plugin Composition
 
 ```
-io.github.gobelango.spring-web-conventions
+io.github.balaelangovan.spring-web-conventions
     │
-    └──> io.github.gobelango.spring-core-conventions
+    └──> io.github.balaelangovan.spring-core-conventions
             │
-            ├──> io.github.gobelango.java-conventions
+            ├──> io.github.balaelangovan.java-conventions
             │       ├─> java-library
             │       ├─> spotless (google-java-format + ktlint)
             │       ├─> jacoco
@@ -240,7 +240,7 @@ io.github.gobelango.spring-web-conventions
             │       ├─> Lombok
             │       └─> JUnit Platform
             │
-            ├──> io.github.gobelango.spring-test-conventions
+            ├──> io.github.balaelangovan.spring-test-conventions
             │       ├─> Spring Boot Starter Test
             │       ├─> MockK
             │       └─> JUnit Platform Launcher
@@ -250,9 +250,9 @@ io.github.gobelango.spring-web-conventions
             ├──> MapStruct
             └──> Strict dependency resolution
 
-io.github.gobelango.spring-webflux-conventions
+io.github.balaelangovan.spring-webflux-conventions
     │
-    └──> io.github.gobelango.spring-core-conventions
+    └──> io.github.balaelangovan.spring-core-conventions
             (same as above)
 ```
 
@@ -473,7 +473,7 @@ public interface OrderMapper {
 // build.gradle.kts
 plugins {
     kotlin("jvm") version "2.2.20"
-    id("io.github.gobelango.spring-web-conventions") version "1.0.0"
+    id("io.github.balaelangovan.spring-web-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -488,7 +488,7 @@ dependencies {
 // build.gradle.kts
 plugins {
     kotlin("jvm") version "2.2.20"
-    id("io.github.gobelango.spring-webflux-conventions") version "1.0.0"
+    id("io.github.balaelangovan.spring-webflux-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -503,7 +503,7 @@ dependencies {
 // build.gradle.kts
 plugins {
     kotlin("jvm") version "2.2.20"
-    id("io.github.gobelango.spring-core-conventions") version "1.0.0"
+    id("io.github.balaelangovan.spring-core-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -518,7 +518,7 @@ dependencies {
 // build.gradle.kts
 plugins {
     kotlin("jvm") version "2.2.20"
-    id("io.github.gobelango.java-conventions") version "1.0.0"
+    id("io.github.balaelangovan.java-conventions") version "1.0.0"
 }
 
 dependencies {
@@ -600,7 +600,7 @@ MIT License - see [LICENSE](LICENSE)
 
 **Balamurugan Elangovan**
 
-[GitHub](https://github.com/gobelango) | [LinkedIn](https://www.linkedin.com/in/balamurugan-elangovan-53791985/) | mail.bala0224@gmail.com
+[GitHub](https://github.com/bala-elangovan) | [LinkedIn](https://www.linkedin.com/in/balamurugan-elangovan-53791985/) | mail.bala0224@gmail.com
 
 ---
 

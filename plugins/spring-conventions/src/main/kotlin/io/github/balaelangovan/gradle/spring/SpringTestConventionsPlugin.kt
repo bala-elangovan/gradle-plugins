@@ -1,4 +1,4 @@
-package io.github.gobelango.gradle.spring
+package io.github.balaelangovan.gradle.spring
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -19,13 +19,13 @@ import org.gradle.kotlin.dsl.dependencies
  * - Groovy support for writing expressive tests
  * - Proper logging exclusions to avoid conflicts
  *
- * This plugin automatically applies `io.github.gobelango.java-conventions` to inherit
+ * This plugin automatically applies `io.github.balaelangovan.java-conventions` to inherit
  * base Java configuration including JUnit Platform setup.
  *
  * **Usage: **
  * ```
  * plugins {
- *     id("io.github.gobelango.spring-test-conventions")
+ *     id("io.github.balaelangovan.spring-test-conventions")
  * }
  * ```
  *
@@ -66,7 +66,7 @@ class SpringTestConventionsPlugin : Plugin<Project> {
     /** Applies Java conventions plugin for base configuration. */
     private fun Project.applyBaseConventions() {
         // Apply by class reference instead of ID to avoid plugin resolution issues in consumer projects
-        pluginManager.apply(io.github.gobelango.gradle.JavaConventionsPlugin::class.java)
+        pluginManager.apply(io.github.balaelangovan.gradle.JavaConventionsPlugin::class.java)
     }
 
     /** Applies Groovy plugin for Spock tests written in Groovy. */

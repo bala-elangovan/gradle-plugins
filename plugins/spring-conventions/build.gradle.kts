@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
-group = "io.github.gobelango"
+group = "io.github.balaelangovan"
 version = "1.0.0"
 
 repositories {
@@ -35,29 +35,29 @@ dependencies {
 gradlePlugin {
     plugins {
         register("springTestConventions") {
-            id = "io.github.gobelango.spring-test-conventions"
-            implementationClass = "io.github.gobelango.gradle.spring.SpringTestConventionsPlugin"
+            id = "io.github.balaelangovan.spring-test-conventions"
+            implementationClass = "io.github.balaelangovan.gradle.spring.SpringTestConventionsPlugin"
             displayName = "Spring Test Conventions Plugin"
             description = "Provides Spring Boot test dependencies and configuration"
         }
 
         register("springCoreConventions") {
-            id = "io.github.gobelango.spring-core-conventions"
-            implementationClass = "io.github.gobelango.gradle.spring.SpringCoreConventionsPlugin"
+            id = "io.github.balaelangovan.spring-core-conventions"
+            implementationClass = "io.github.balaelangovan.gradle.spring.SpringCoreConventionsPlugin"
             displayName = "Spring Core Conventions Plugin"
             description = "Provides core Spring Boot configuration with MapStruct"
         }
 
         register("springWebConventions") {
-            id = "io.github.gobelango.spring-web-conventions"
-            implementationClass = "io.github.gobelango.gradle.spring.SpringWebConventionsPlugin"
+            id = "io.github.balaelangovan.spring-web-conventions"
+            implementationClass = "io.github.balaelangovan.gradle.spring.SpringWebConventionsPlugin"
             displayName = "Spring Web Conventions Plugin"
             description = "Provides Spring Boot Web (MVC) configuration with platform-commons auto-configuration"
         }
 
         register("springWebFluxConventions") {
-            id = "io.github.gobelango.spring-webflux-conventions"
-            implementationClass = "io.github.gobelango.gradle.spring.SpringWebFluxConventionsPlugin"
+            id = "io.github.balaelangovan.spring-webflux-conventions"
+            implementationClass = "io.github.balaelangovan.gradle.spring.SpringWebFluxConventionsPlugin"
             displayName = "Spring WebFlux Conventions Plugin"
             description = "Provides Spring Boot WebFlux (Reactive) configuration with platform-commons auto-configuration"
         }
@@ -76,7 +76,7 @@ kotlin {
 
 // Generate version constants from the version catalog
 val generateVersions by tasks.registering {
-    val outputFile = file("src/main/kotlin/io/github/gobelango/gradle/spring/SpringConventionsVersions.kt")
+    val outputFile = file("src/main/kotlin/io/github/balaelangovan/gradle/spring/SpringConventionsVersions.kt")
 
     outputs.file(outputFile)
 
@@ -86,7 +86,7 @@ val generateVersions by tasks.registering {
             """
             // AUTO-GENERATED - DO NOT EDIT
             // This file is generated from gradle/libs.versions.toml
-            package io.github.gobelango.gradle.spring
+            package io.github.balaelangovan.gradle.spring
 
             /**
              * Dependency versions for Spring conventions plugins.
