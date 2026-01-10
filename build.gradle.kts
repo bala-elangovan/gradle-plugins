@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
 }
 
-group = "io.github.balaelangovan"
-version = "1.0.0"
+group = "com.github.bala-elangovan"
+version = "${property("major")}.${property("minor")}.${property("patch")}"
 
 repositories {
     mavenCentral()
