@@ -231,10 +231,10 @@ To update:
 # Build and test
 make test
 
-# Publish to Maven Local
+# Publish to Maven Local (for local testing)
 make publish-local
 
-# Test in another project
+# Test in another project using Maven Local
 # Add to your test project's settings.gradle.kts:
 pluginManagement {
     repositories {
@@ -243,6 +243,49 @@ pluginManagement {
     }
 }
 ```
+
+---
+
+## Releasing
+
+Artifacts are published via [JitPack](https://jitpack.io/#bala-elangovan/gradle-plugins). JitPack builds on-demand when someone requests an artifact.
+
+### Version Management
+
+Version components are defined in `gradle.properties`:
+
+```properties
+major=0
+minor=1
+patch=0
+```
+
+### Release Process
+
+1. **Update version** in `gradle.properties` (if needed)
+
+2. **Ensure all changes are merged** to `main`
+
+3. **Create and push a tag**
+   ```bash
+   git tag v0.1.0
+   git push origin v0.1.0
+   ```
+
+4. **Verify the release**
+   - GitHub Actions creates a GitHub Release automatically
+   - Check build status: https://jitpack.io/#bala-elangovan/gradle-plugins
+
+### Artifact Coordinates
+
+| Module | JitPack Coordinates |
+|--------|---------------------|
+| java-conventions | `com.github.bala-elangovan.gradle-plugins:plugins-java-conventions:TAG` |
+| spring-conventions | `com.github.bala-elangovan.gradle-plugins:plugins-spring-conventions:TAG` |
+
+### First Build Latency
+
+JitPack builds artifacts on first request. The initial fetch takes ~1-2 minutes while JitPack clones and builds the project. Subsequent requests are instant.
 
 ## Pull Request Process
 
