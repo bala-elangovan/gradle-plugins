@@ -8,8 +8,8 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
-group = "io.github.balaelangovan"
-version = "1.0.0"
+group = rootProject.group
+version = rootProject.version
 
 repositories {
     mavenCentral()

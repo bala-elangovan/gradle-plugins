@@ -45,7 +45,7 @@ class SpringWebFluxConventionsPlugin : Plugin<Project> {
      */
     private fun Project.addSpringCommonsDependency() {
         dependencies {
-            add("implementation", "io.github.balaelangovan:spring-boot-webflux-starter:${SpringConventionsVersions.SPRING_COMMONS}")
+            add("implementation", "com.github.bala-elangovan.spring-commons:spring-boot-webflux-starter:${SpringConventionsVersions.SPRING_COMMONS}")
         }
     }
 }

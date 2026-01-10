@@ -2,8 +2,9 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
 }
 
-group = "io.github.balaelangovan"
-version = "1.0.0"
+group = "com.github.bala-elangovan"
+// Version is set via -Pversion=X.Y.Z during release, or defaults for local development
+version = findProperty("version") ?: "local-SNAPSHOT"
 
 repositories {
     mavenCentral()

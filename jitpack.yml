@@ -1,0 +1,8 @@
+# JitPack build configuration
+# https://docs.jitpack.io/building/
+
+jdk:
+  - openjdk21
+
+install:
+  - ./gradlew publishToMavenLocal -x test
