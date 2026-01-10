@@ -32,36 +32,46 @@ These plugins eliminate boilerplate build configuration and enforce consistent s
 
 ## Quick Start
 
-### **1. Publish to Maven Local**
-
-```bash
-git clone https://github.com/bala-elangovan/gradle-plugins.git
-cd gradle-plugins
-
-# Build and publish
-./gradlew publishToMavenLocal
-```
-
-### **2. Use in Your Project**
+### **1. Add JitPack Repository**
 
 ```kotlin
 // settings.gradle.kts
 pluginManagement {
     repositories {
-        mavenLocal()
         gradlePluginPortal()
+        maven("https://jitpack.io")
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven("https://jitpack.io")
     }
 }
 
 rootProject.name = "my-spring-app"
 ```
 
+### **2. Add Plugin Dependency**
+
 ```kotlin
 // build.gradle.kts
-plugins {
-    kotlin("jvm") version "2.2.20"  // Required: Apply Kotlin plugin first
-    id("io.github.balaelangovan.spring-web-conventions") version "1.0.0"
+buildscript {
+    repositories {
+        maven("https://jitpack.io")
+    }
+    dependencies {
+        classpath("com.github.bala-elangovan.gradle-plugins:plugins-spring-conventions:v0.1.0")
+    }
 }
+
+plugins {
+    kotlin("jvm") version "2.2.20"
+}
+
+apply(plugin = "io.github.balaelangovan.spring-web-conventions")
 
 group = "com.example"
 version = "1.0.0"
@@ -108,15 +118,34 @@ Foundation plugin that provides base Java and Kotlin configuration.
 
 **For single-module projects:**
 ```kotlin
+buildscript {
+    repositories {
+        maven("https://jitpack.io")
+    }
+    dependencies {
+        classpath("com.github.bala-elangovan.gradle-plugins:plugins-java-conventions:v0.1.0")
+    }
+}
+
 plugins {
     kotlin("jvm") version "2.2.20"
-    id("io.github.balaelangovan.java-conventions") version "1.0.0"
 }
+
+apply(plugin = "io.github.balaelangovan.java-conventions")
 ```
 
 **For multi-module projects:**
 ```kotlin
 // Root build.gradle.kts
+buildscript {
+    repositories {
+        maven("https://jitpack.io")
+    }
+    dependencies {
+        classpath("com.github.bala-elangovan.gradle-plugins:plugins-java-conventions:v0.1.0")
+    }
+}
+
 plugins {
     kotlin("jvm") version "2.2.20" apply false
 }
@@ -124,8 +153,9 @@ plugins {
 // Subproject build.gradle.kts
 plugins {
     kotlin("jvm")
-    id("io.github.balaelangovan.java-conventions")
 }
+
+apply(plugin = "io.github.balaelangovan.java-conventions")
 ```
 
 ---
@@ -465,16 +495,36 @@ public interface OrderMapper {
 
 ---
 
+## Artifacts
+
+Published via [JitPack](https://jitpack.io/#bala-elangovan/gradle-plugins).
+
+| Artifact | Coordinates |
+|----------|-------------|
+| Java Conventions | `com.github.bala-elangovan.gradle-plugins:plugins-java-conventions:v0.1.0` |
+| Spring Conventions | `com.github.bala-elangovan.gradle-plugins:plugins-spring-conventions:v0.1.0` |
+
+See also: [spring-commons](https://github.com/bala-elangovan/spring-commons) library for additional Spring Boot starters.
+
+---
+
 ## Example Projects
+
+All examples assume you have the JitPack repository configured in `settings.gradle.kts` (see Quick Start).
 
 ### **Spring Boot REST API (MVC)**
 
 ```kotlin
 // build.gradle.kts
-plugins {
-    kotlin("jvm") version "2.2.20"
-    id("io.github.balaelangovan.spring-web-conventions") version "1.0.0"
+buildscript {
+    repositories { maven("https://jitpack.io") }
+    dependencies {
+        classpath("com.github.bala-elangovan.gradle-plugins:plugins-spring-conventions:v0.1.0")
+    }
 }
+
+plugins { kotlin("jvm") version "2.2.20" }
+apply(plugin = "io.github.balaelangovan.spring-web-conventions")
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -486,10 +536,15 @@ dependencies {
 
 ```kotlin
 // build.gradle.kts
-plugins {
-    kotlin("jvm") version "2.2.20"
-    id("io.github.balaelangovan.spring-webflux-conventions") version "1.0.0"
+buildscript {
+    repositories { maven("https://jitpack.io") }
+    dependencies {
+        classpath("com.github.bala-elangovan.gradle-plugins:plugins-spring-conventions:v0.1.0")
+    }
 }
+
+plugins { kotlin("jvm") version "2.2.20" }
+apply(plugin = "io.github.balaelangovan.spring-webflux-conventions")
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
@@ -501,10 +556,15 @@ dependencies {
 
 ```kotlin
 // build.gradle.kts
-plugins {
-    kotlin("jvm") version "2.2.20"
-    id("io.github.balaelangovan.spring-core-conventions") version "1.0.0"
+buildscript {
+    repositories { maven("https://jitpack.io") }
+    dependencies {
+        classpath("com.github.bala-elangovan.gradle-plugins:plugins-spring-conventions:v0.1.0")
+    }
 }
+
+plugins { kotlin("jvm") version "2.2.20" }
+apply(plugin = "io.github.balaelangovan.spring-core-conventions")
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -516,10 +576,15 @@ dependencies {
 
 ```kotlin
 // build.gradle.kts
-plugins {
-    kotlin("jvm") version "2.2.20"
-    id("io.github.balaelangovan.java-conventions") version "1.0.0"
+buildscript {
+    repositories { maven("https://jitpack.io") }
+    dependencies {
+        classpath("com.github.bala-elangovan.gradle-plugins:plugins-java-conventions:v0.1.0")
+    }
 }
+
+plugins { kotlin("jvm") version "2.2.20" }
+apply(plugin = "io.github.balaelangovan.java-conventions")
 
 dependencies {
     api("tools.jackson.core:jackson-databind")
