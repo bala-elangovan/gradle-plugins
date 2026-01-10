@@ -3,8 +3,7 @@ plugins {
 }
 
 group = "com.github.bala-elangovan"
-// Version is set via -Pversion=X.Y.Z during release, or defaults for local development
-version = findProperty("version") ?: "local-SNAPSHOT"
+version = "${property("major")}.${property("minor")}.${property("patch")}"
 
 repositories {
     mavenCentral()
