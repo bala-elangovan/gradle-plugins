@@ -10,7 +10,6 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.named
-import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
@@ -29,7 +28,6 @@ class JavaConventionsPlugin : Plugin<Project> {
         with(project) {
             applyPlugins()
             configureJavaToolchain()
-            configureRepositories()
             configureDependencies()
             configureSpotless()
             configureJacoco()
@@ -63,16 +61,6 @@ class JavaConventionsPlugin : Plugin<Project> {
             extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension> {
                 jvmToolchain(21)
             }
-        }
-    }
-
-    /**
-     * Adds Maven Central and Maven Local repositories.
-     */
-    private fun Project.configureRepositories() {
-        repositories {
-            mavenCentral()
-            mavenLocal()
         }
     }
 
