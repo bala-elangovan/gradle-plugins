@@ -260,6 +260,15 @@ minor=1
 patch=0
 ```
 
+**Automatic version bumping:**
+- After each release, a GitHub Action automatically bumps the minor version and creates a PR
+- Patch version is reset to 0 after each release
+
+**For major releases:**
+1. Manually update `major` in `gradle.properties`
+2. Reset `minor` and `patch` to 0
+3. Tag and release as usual
+
 ### Release Process
 
 1. **Update version** in `gradle.properties` (if needed)
