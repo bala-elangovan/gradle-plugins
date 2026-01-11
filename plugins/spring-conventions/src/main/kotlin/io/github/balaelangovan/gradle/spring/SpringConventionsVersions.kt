@@ -8,5 +8,5 @@ object SpringConventionsVersions {
     const val KOTEST = "6.0.7"
     const val GROOVY = "5.0.3"
     const val SPOCK = "2.4-groovy-5.0"
-    const val SPRING_COMMONS = "0.1.0"
+    const val SPRING_COMMONS = "0.2.0"
 }
