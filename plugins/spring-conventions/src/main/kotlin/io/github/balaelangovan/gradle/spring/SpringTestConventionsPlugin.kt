@@ -8,7 +8,8 @@ import org.gradle.kotlin.dsl.dependencies
  * Convention plugin providing comprehensive Spring Boot test configuration.
  *
  * Configures Spring Boot test starters (web, webflux, restclient, webclient), MockK,
- * Spock Framework with Groovy, and JUnit Platform. Automatically applies java-conventions.
+ * Kotest (runner, assertions, property testing), Spock Framework with Groovy, and JUnit Platform.
+ * Automatically applies java-conventions.
  *
  * Excludes conflicting logging dependencies (logback, log4j-to-slf4j, spring-boot-starter-logging)
  * to support projects using Log4j2.
@@ -38,7 +39,7 @@ class SpringTestConventionsPlugin : Plugin<Project> {
     }
 
     /**
-     * Adds Spring Boot test starters, MockK, Spock, Groovy, and JUnit Platform Launcher.
+     * Adds Spring Boot test starters, MockK, Kotest, Spock, Groovy, and JUnit Platform Launcher.
      */
     private fun Project.addTestDependencies() {
         dependencies {
@@ -48,6 +49,9 @@ class SpringTestConventionsPlugin : Plugin<Project> {
             add("testImplementation", "org.springframework.boot:spring-boot-starter-restclient-test:${SpringConventionsVersions.SPRING_BOOT}")
             add("testImplementation", "org.springframework.boot:spring-boot-starter-webclient-test:${SpringConventionsVersions.SPRING_BOOT}")
             add("testImplementation", "io.mockk:mockk:${SpringConventionsVersions.MOCKK}")
+            add("testImplementation", "io.kotest:kotest-runner-junit5:${SpringConventionsVersions.KOTEST}")
+            add("testImplementation", "io.kotest:kotest-assertions-core:${SpringConventionsVersions.KOTEST}")
+            add("testImplementation", "io.kotest:kotest-property:${SpringConventionsVersions.KOTEST}")
             add("testImplementation", "org.apache.groovy:groovy:${SpringConventionsVersions.GROOVY}")
             add("testImplementation", "org.spockframework:spock-core:${SpringConventionsVersions.SPOCK}")
             add("testImplementation", "org.spockframework:spock-spring:${SpringConventionsVersions.SPOCK}")
