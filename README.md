@@ -439,6 +439,7 @@ spring-web = ["spring-boot-starter-web", "spring-boot-starter-validation", "spri
 | Spring Test       | Core Spring testing support                  |
 | Mockito           | Traditional Java mocking                     |
 | MockK             | Kotlin-style mocking (works with Java)       |
+| Kotest            | Kotlin-native testing with assertions & property testing |
 | Spock Framework   | BDD-style testing with given-when-then       |
 | Groovy            | Required for Spock tests                     |
 | AssertJ           | Fluent assertions                            |

@@ -80,6 +80,7 @@ val generateVersions by tasks.registering {
                 const val SPRING_BOOT = "${libs.versions.spring.boot.get()}"
                 const val MAPSTRUCT = "${libs.versions.mapstruct.get()}"
                 const val MOCKK = "${libs.versions.mockk.get()}"
+                const val KOTEST = "${libs.versions.kotest.get()}"
                 const val GROOVY = "${libs.versions.groovy.get()}"
                 const val SPOCK = "${libs.versions.spock.get()}"
                 const val SPRING_COMMONS = "${libs.versions.spring.commons.get()}"
